@@ -1,79 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import Spacecraft from './Spacecraft';
+import { Link, useNavigate } from 'react-router-dom';
+import { getSpacecrafts } from '../services/api';
 
 function Spacecrafts() {
-    const [spacecrafts, setSpacecrafts] = useState([]);
-    const [newSpacecraft, setNewSpacecraft] = useState({
-        name: '',
-        speed: 0,
-        fuel_log: 0,
-        equipment: '',
-    });
+  const [spacecrafts, setSpacecrafts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        fetch('/spacecrafts')
-        .then(response => response.json())
-        .then(data => setSpacecrafts(data))
-        .catch(error => console.error('Error fetching spacecraft:', error));
-    }, []);
-
-    const handleUpdate = (updatedSpacecraft) => {
-        setSpacecrafts(prevSpacecrafts =>
-            prevSpacecrafts.map(s => s.id === updatedSpacecraft.id ? updatedSpacecraft :  s)
-        );
+  useEffect(() => {
+    const fetchSpacecrafts = async () => {
+      try {
+        const data = await getSpacecrafts();
+        setSpacecrafts(data);
+      } catch (error) {
+        console.error("Error fetching spacecraft:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleDelete = (id) => {
-        setSpacecrafts(prevSpacecrafts => prevSpacecrafts.filter(s => s.id !== id));
-    };
+    fetchSpacecrafts();
+  }, []);
 
-    const handleAddSpacecraft = async () => {
-        try {
-            const response = await fetch('/spacecrafts', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newSpacecraft),
-            });
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`/spacecrafts/${id}`, { method: 'DELETE' });
+      if (response.ok) {
+        setSpacecrafts(spacecrafts.filter(spacecraft => spacecraft.id !== id));
+      } else {
+        console.error('Failed to delete spacecraft:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting spacecraft:', error);
+    }
+  };
 
-            if (response.ok) {
-                const newSpacecraftData = await response.json();
-                setSpacecrafts([...spacecrafts, newSpacecraftData]);
-                setNewSpacecraft({
-                    name: '',
-                    speed: 0,
-                    fuel_log: 0,
-                    equipment: '',
-                });
-                } else {
-                    console.error('Failed to add spacecraft:', response)
-                }
-            } catch (error) {
-              console.error('Error adding spacecraft:', error);
-            }
-          };
-        
-          return (
-            <div className="spacecrafts">
-              <h2>Your Spacecrafts</h2>
-              <div>
-                <h3>Add New Spacecraft</h3>
-                <input type="text" value={newSpacecraft.name} onChange={(e) => setNewSpacecraft({ ...newSpacecraft, name: e.target.value })} placeholder="Name" />
-                <input type="number" value={newSpacecraft.speed} onChange={(e) => setNewSpacecraft({ ...newSpacecraft, speed: parseInt(e.target.value) })} placeholder="Speed" />
-                <input type="number" value={newSpacecraft.fuel_log} onChange={(e) => setNewSpacecraft({ ...newSpacecraft, fuel_log: parseInt(e.target.value) })} placeholder="Fuel Log" />
-                <input type="text" value={newSpacecraft.equipment} onChange={(e) => setNewSpacecraft({ ...newSpacecraft, equipment: e.target.value })} placeholder="Equipment" />
-                <button onClick={handleAddSpacecraft}>Add Spacecraft</button>
-              </div>
-        
-              {spacecrafts.map(spacecraft => (
-                <Spacecraft 
-                  key={spacecraft.id}
-                  spacecraft={spacecraft}
-                  onUpdate={handleUpdate} 
-                  onDelete={handleDelete} 
-                />
-              ))}
-            </div>
-          );
-        }
-        
+  if (loading) return <div>Loading spacecrafts...</div>;
+
+  return (
+    <div>
+      <h2>Your Spacecrafts</h2>
+      <ul>
+        {spacecrafts.map((spacecraft) => (
+          <li key={spacecraft.id}>
+            <Link to={`/spacecrafts/${spacecraft.id}`}>{spacecraft.name}</Link>
+            <button onClick={() => handleDelete(spacecraft.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+      {/* Add a form to create new spacecrafts (or a button that navigates to a new component) */}
+    </div>
+  );
+}
+
 export default Spacecrafts;

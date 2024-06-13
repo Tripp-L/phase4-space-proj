@@ -1,5 +1,6 @@
 import React from "react";
 import App from "./components/App";
+import "./spacecrafts.json"
 import "./index.css";
 import { createRoot } from "react-dom/client";
 
