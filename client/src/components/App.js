@@ -1,18 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './Navbar.jsx';
-import Login from './Login';
-import Signup from './Signup';
-import Dashboard from './Dashboard';
-import Missions from './Missions';
-import Spacecrafts from './Spacecrafts.jsx';
-import Explore from './Explore';
-import Spacecraft from './Spacecraft.jsx';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-const SpaceContext = createContext();
-export const useSpace = () => useContext(SpaceContext);
+import React, { useEffect, useState } from "react";
+import { Switch, Route } from "react-router-dom";
 
 function App() {
   const [celestialBodies, setCelestialBodies] = useState([]);
@@ -21,10 +8,10 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    async function checkLoginStatus() {
+    const checkLoginStatus = async () => {
       const auth = await checkAuth();
       setIsLoggedIn(auth);
-    }
+    };
     checkLoginStatus();
   }, []);
 

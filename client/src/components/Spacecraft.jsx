@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getSpacecraft, updateSpacecraft, deleteSpacecraft } from "../services/api";
-import { useAuth } from '../hooks/useAuth';
-import './Spacecraft.css'; 
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-
-function Spacecraft() {
+function Spacecraft({ onDelete }) {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { token } = useAuth();
   const [spacecraft, setSpacecraft] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,25 +13,31 @@ function Spacecraft() {
     repair_status: "",
   });
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchSpacecraft = async () => {
+      setIsLoading(true);
       try {
-        const data = await getSpacecraft(id, token);
-        setSpacecraft(data);
-        setFormData(data);
-      } catch (error) {
-        console.error("Error fetching spacecraft:", error);
-        if (error.response && error.response.status === 404) {
-          setError("Spacecraft not found.");
-        } else {
-          setError("An error occurred while fetching spacecraft data.");
+        const response = await fetch(`http://localhost:3000/spacecrafts/${id}`);
+        if (!response.ok) {
+          throw new Error('Spacecraft not found');
         }
+        const data = await response.json();
+        setSpacecraft(data);
+        setFormData(data); // Initialize form data with fetched data
+      } catch (error) {
+        console.error('Error fetching spacecraft:', error);
+        setError(error.message);
+        } finally {
+          setIsLoading(false);
       }
     };
 
-    fetchSpacecraft();
-  }, [id, token]); // Fetch data again if token changes
+    if (id) { // Only fetch if id is available
+      fetchSpacecraft();
+    }
+  }, [id]); 
 
   const handleInputChange = (e) => {
     setFormData({
@@ -48,31 +48,52 @@ function Spacecraft() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null);
+
     try {
-      const updatedSpacecraft = await updateSpacecraft(id, formData, token);
-      setSpacecraft(updatedSpacecraft);
-      setIsEditing(false);
+      const response = await fetch(`http://localhost:3000/spacecrafts/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Send form data in request body
+      });
+
+      if (response.ok) {
+        const updatedSpacecraft = await response.json();
+        setSpacecraft(updatedSpacecraft);
+        setIsEditing(false);
+      } else {
+        throw new Error('Failed to update spacecraft');
+      }
     } catch (error) {
       console.error("Error updating spacecraft:", error);
-      setError("An error occurred while updating the spacecraft."); // Display error message
+      setError(error.message);
     }
   };
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this spacecraft?")) {
       try {
-        await deleteSpacecraft(id, token);
-        navigate("/spacecrafts"); // Redirect after successful deletion
+        const response = await fetch(`http://localhost:3000/spacecrafts/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+          onDelete(id); // Redirect after successful deletion
+        } else {
+          throw new Error('Failed to delete spacecraft');
+        }
       } catch (error) {
         console.error("Error deleting spacecraft:", error);
-        setError("An error occurred while deleting the spacecraft.");
+        setError(error.message);
       }
     }
   };
 
-  if (!spacecraft) {
-    return <div>{error || "Loading..."}</div>;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>
   }
 
   return (
