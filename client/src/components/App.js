@@ -1,53 +1,38 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './Navbar';
-import Login from './Login';
-import Signup from './Signup';
-import Mission from './Mission';
-import Spacecrafts from './Spacecrafts';
-import Spacecraft from './Spacecraft';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-const SpaceContext = createContext();
-export const useSpace = () => useContext(SpaceContext);
-
-async function checkAuth() {
-  const response = await fetch('/api/check-auth');
-  const data = await response.json();
-  return data.isAuthenticated;
-}
+import React, { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import Spacecrafts from "./Spacecrafts";
+import Spacecraft from "./Spacecraft";
+import Navbar from "./Navbar";
 
 function App() {
-  const [celestialBodies, setCelestialBodies] = useState([]);
-  const [totalDistance, setTotalDistance] = useState(0);
-  const [destinations, setDestinations] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [spacecrafts, setSpacecrafts] = useState([]);
 
   useEffect(() => {
-    async function checkLoginStatus() {
-      const auth = await checkAuth();
-      setIsLoggedIn(auth);
-    }
-    checkLoginStatus();
+    const fetchSpacecrafts = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/spacecrafts");
+        const data = await response.json();
+        setSpacecrafts(data.spacecrafts);
+      } catch (error) {
+        console.error("Error fetching spacecraft:", error);
+      }
+    };
+
+    fetchSpacecrafts();
   }, []);
 
-  return (
-    <BrowserRouter>
-      <SpaceContext.Provider value={{ celestialBodies, totalDistance, destinations }}>
-        <div className="App">
-          <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-          <Routes>
-            <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/mission" element={isLoggedIn ? <Mission /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/spacecrafts" element={isLoggedIn ? <Spacecrafts /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/spacecrafts/:id" element={<Spacecraft />} />
-          </Routes>
-        </div>
-      </SpaceContext.Provider>
-    </BrowserRouter>
-  );
-}
+  const handleDeleteSpacecraft = (deletedSpacecraftId) => {
+    setSpacecrafts(spacecrafts.filter(spacecraft => spacecraft.id !== deletedSpacecraftId));
+  };
 
-export default App;
+  return (
+    <div>
+      <Navbar />
+      <Routes>
+        <Route path="/spacecrafts"> 
+          <Route index element={<Spacecrafts spacecrafts={spacecrafts} onDelete={handleDeleteSpacecraft} />} />
+          <Route path=":id" element={<Spacecraft spacecrafts={spacecrafts} onDelete={handleDeleteSpacecraft} />} /> 
+        </Route>
+      </Routes>
+    </div>

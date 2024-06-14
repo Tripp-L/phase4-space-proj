@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-
-function Spacecrafts({ onDelete, userData }) {
+function Spacecrafts({ onDelete }) {
   const [spacecrafts, setSpacecrafts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,16 +10,13 @@ function Spacecrafts({ onDelete, userData }) {
     const fetchSpacecrafts = async () => {
       try {
         const response = await fetch('http://localhost:3000/spacecrafts');
-        if (!response.ok) { 
+
+        if (!response.ok) {
           throw new Error(`Failed to fetch spacecraft: ${response.statusText}`);
         }
-        const data = await response.json();
 
-        if (userData) {
-          setSpacecrafts(data.filter(spacecraft => spacecraft.userId === userData.id));
-        } else {
-          setSpacecrafts(data);
-        }
+        const data = await response.json();
+        setSpacecrafts(data);
       } catch (error) {
         console.error('Error fetching spacecraft:', error);
         setError(error.message);
@@ -30,37 +26,39 @@ function Spacecrafts({ onDelete, userData }) {
     };
 
     fetchSpacecrafts();
-  }, [userData]);
+  }, []); 
 
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/spacecrafts/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
+
       if (response.ok) {
-        onDelete(id); 
+        onDelete(id);
       } else {
         console.error("Failed to delete spacecraft:", response.statusText);
         setError("Failed to delete spacecraft.");
       }
     } catch (error) {
       console.error("Error deleting spacecraft:", error);
-      setError("An error occured while deleting the spacecraft.");
+      setError("An error occurred while deleting the spacecraft.");
     }
   };
 
-  if (loading) return <div>Loading spacecrafts...</div>;
-  if (error) return <div className="error-message">{error}</div>; 
-
   return (
     <div>
-      <h2>Your Spacecrafts</h2>
+      <h2>Spacecrafts</h2>
 
-      {spacecrafts.length === 0 ? (
-        <div>No spacecraft available.</div>
+      {loading ? (
+        <div>Loading spacecrafts...</div> 
+      ) : error ? (
+        <div className="error-message">{error}</div> 
+      ) : spacecrafts.length === 0 ? (
+        <div>No spacecraft available.</div> 
       ) : (
         <ul>
-          {spacecrafts.map((spacecraft) => (
+          {spacecrafts.map((spacecraft) => ( 
             <li key={spacecraft.id}>
               <Link to={`/spacecrafts/${spacecraft.id}`}>{spacecraft.name}</Link>
               <button onClick={() => handleDelete(spacecraft.id)}>Delete</button>
@@ -69,8 +67,9 @@ function Spacecrafts({ onDelete, userData }) {
         </ul>
       )}
 
-      {/* Button to create a new spacecraft (implementation in parent component) */}
-      <Link to="/spacecrafts/new"><button>Create New Spacecraft</button></Link>
+      <Link to="/spacecrafts/new">
+        <button>Create New Spacecraft</button>
+      </Link>
     </div>
   );
 }
