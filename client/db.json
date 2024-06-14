@@ -1,0 +1,44 @@
+{
+    "spacecrafts": [
+        {
+            "id": 1,
+            "name": "Odyssey",
+            "speed": 25000,
+            "fuel_log": 12500,
+            "equipment": ["Long-range scanner", "Cryogenic stasis pods", "Sample collection arm"],
+            "image": "odyssey.jpg"
+          },
+          {
+            "id": 2,
+            "name": "Voyager II",
+            "speed": 32000,
+            "fuel_log": 9800,
+            "equipment": ["High-resolution camera", "Radiation shield", "Interstellar radio"],
+            "image": "voyager2.jpg"
+          },
+          {
+            "id": 3,
+            "name": "Aurora",
+            "speed": 45000,
+            "fuel_log": 28000,
+            "equipment": ["Plasma drive", "Nanobot repair system", "Quantum entanglement communicator"],
+            "image": "aurora.jpg"
+          },
+          {
+            "id": 4,
+            "name": "Pioneer",
+            "speed": 18000,
+            "fuel_log": 6000,
+            "equipment": ["Solar panels", "Asteroid mining laser", "Hydroponic garden"],
+            "image": "pioneer.jpg"
+          },
+          {
+            "id": 5,
+            "name": "Galactica",
+            "speed": 38000,
+            "fuel_log": 15000,
+            "equipment": ["Hyperspace engine", "Drone fleet", "Bio-dome"],
+            "image": "galactica.jpg"
+          }
+    ]
+}

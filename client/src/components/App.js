@@ -1,28 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Spacecrafts from './Spacecrafts';
+import Spacecraft from './Spacecraft';
+import Navbar from './Navbar';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(checkAuth());
+  const [spacecrafts, setSpacecrafts] = useState([]);
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      const auth = await checkAuth();
-      setIsLoggedIn(auth);
+    const fetchSpacecrafts = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/spacecrafts');
+        const data = await response.json();
+        setSpacecrafts(data);
+      } catch (error) {
+        console.error('Error fetching spacecraft:', error);
+      }
     };
-    checkLoginStatus();
+
+    fetchSpacecrafts();
   }, []);
 
+  const handleDeleteSpacecraft = (deletedSpacecraftId) => {
+    setSpacecrafts(spacecrafts.filter(spacecraft => spacecraft.id !== deletedSpacecraftId));
+  };
+
   return (
-    <div className="App">
-      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+    <div>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/missions" element={isLoggedIn ? <Missions /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/spacecrafts" element={isLoggedIn ? <Spacecrafts /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/explore" element={isLoggedIn ? <Explore /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/spacecrafts/:id" element={<Spacecraft />} />
+        {/* Other routes */}
+        <Route path="/spacecrafts" > 
+            <Route index element={<Spacecrafts spacecrafts={spacecrafts} onDelete={handleDeleteSpacecraft} />} />
+            <Route path=":id" element={<Spacecraft onDelete={handleDeleteSpacecraft} />} /> 
+        </Route>
       </Routes>
     </div>
   );
