@@ -1,0 +1,19 @@
+.celestial-container {
+    padding: 0;
+    min-height: 100vh;
+    background-image: url('https://cdn.theatlantic.com/thumbor/EmW-E0FwUa0MhOoGk0BXYyBiBm0=/0x0:1718x1718/1718x1718/media/files/est/space-calculator/background6.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding-top: 60px;
+}
+
+.celestial-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 60px;
+    color: rgba(100, 150, 250, 0.95);
+    text-shadow: 4px 4px 0 rgba(100, 150, 250, 0.95), 5px 5px 0 rgba(100, 150, 250, 0.95), 9px 9px 0 rgba(100, 150, 250, 0.1), 12px 12px 10px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}

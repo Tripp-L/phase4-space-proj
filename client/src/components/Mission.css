@@ -1,0 +1,82 @@
+.container {
+    padding: 0; /* Remove padding to use full width */
+    min-height: 100vh; /* Full viewport height */
+    background-image: url('https://cdn.theatlantic.com/thumbor/EmW-E0FwUa0MhOoGk0BXYyBiBm0=/0x0:1718x1718/1718x1718/media/files/est/space-calculator/background6.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Ensures background covers the full page and stays fixed during scroll */
+    padding-top: 60px; /* Increased padding to separate header from top more distinctly */
+}
+
+h1.mission-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 60px;
+    color: rgba(100, 150, 250, 0.95);
+    text-shadow:
+        4px 4px 0 rgba(100, 150, 250, 0.95),
+        5px 5px 0 rgba(100, 150, 250, 0.95),
+        9px 9px 0 rgba(100, 150, 250, 0.1),
+        12px 12px 10px rgba(0, 0, 0, 0.4); /* Adds a softer shadow at the end for depth */
+    text-align: center;
+}
+
+.card {
+    background-color: rgba(100, 150, 250, 0.5);
+    border: 2px solid rgba(180, 220, 255, 0.85); /* Lighter blue shade for better visibility */
+    box-shadow: 6px 6px 15px #7ea5f3f6,
+                -3px -3px 10px #7ea5f3f6,
+                inset -8px -8px 20px rgba(100, 150, 250, 0.5),
+                inset 5px 5px 10px rgba(100, 150, 250, 0.5);
+    transition: transform 0.3s ease-out, box-shadow 0.6s ease-out;
+    margin-bottom: 50px; /* Additional margin to separate cards */
+    margin-left: 10px; /* Space between cards */
+    margin-right: 10px; /* Space between cards */
+    width: 365px; /* Adjust width to make cards smaller */
+    margin-top: 80px;
+}
+
+.card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 20px 20px 40px rgba(100, 150, 250, 0.5),
+                -2px -2px 9px rgba(100, 150, 250, 0.6),
+                inset -8px -8px 20px #7ea5f3f6,
+                inset 5px 5px 10px #7ea5f3f6;
+}
+
+.card-body {
+    color: rgba(100, 150, 250, 0.95);
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 1px 1px 2px black;
+    line-height: 1.5;
+    padding: 20px; /* Ensure consistent spacing inside the card */
+    margin-bottom: 2px;
+}
+
+.card-img-top {
+    height: 350px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(180, 220, 255, 0.85); /* Border to separate image from text content */
+    height: 250px;
+}
+
+.card-title {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.card-text, li {
+    font-size: 1.2em; /* Slightly smaller for better readability */
+    margin-bottom: 1em;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 20px;
+    margin-top: 2em;
+}
+
+li::before {
+    content: '🚀';
+    padding-right: 5px;
+    color: #FFF; /* Ensure emojis remain white and do not inherit the Orbitron font */
+}
