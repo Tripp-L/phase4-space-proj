@@ -1,50 +1,36 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import Dashboard from './components/Dashboard';
-import Missions from './components/Missions';
-import Spacecrafts from './components/Spacecrafts';
-import Explore from './components/Explore';
-import Spacecraft from './components/Spacecraft';
+import Navbar from './Navbar.jsx';
+import Login from './Login';
+import Signup from './Signup';
+import Dashboard from './Dashboard';
+import Missions from './Missions';
+import Spacecrafts from './Spacecrafts.jsx';
+import Explore from './Explore';
+import Spacecraft from './Spacecraft.jsx';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SpaceContext = createContext();
 export const useSpace = () => useContext(SpaceContext);
 
-
-function checkAuth() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(true);
-    }, 1000);
-  });
-}
-
-const App = () => {
+function App() {
   const [celestialBodies, setCelestialBodies] = useState([]);
   const [totalDistance, setTotalDistance] = useState(0);
   const [destinations, setDestinations] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
+    async function checkLoginStatus() {
       const auth = await checkAuth();
       setIsLoggedIn(auth);
-    };
+    }
     checkLoginStatus();
   }, []);
 
   const toggleCelestialBody = (body) => {
-    const exists = celestialBodies.find(item => item.id === body.id);
-    let updatedCelestialBodies;
-    if (exists) {
-      updatedCelestialBodies = celestialBodies.filter(item => item.id !== body.id);
-    } else {
-      updatedCelestialBodies = [...celestialBodies, body];
-    }
+    const exists = celestialBodies.some(item => item.id === body.id);
+    let updatedCelestialBodies = exists ? celestialBodies.filter(item => item.id !== body.id) : [...celestialBodies, body];
     setCelestialBodies(updatedCelestialBodies);
     updateDestinations(updatedCelestialBodies);
   };
@@ -74,6 +60,6 @@ const App = () => {
       </SpaceContext.Provider>
     </Router>
   );
-};
+}
 
 export default App;
