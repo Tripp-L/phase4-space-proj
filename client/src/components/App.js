@@ -1,5 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './Navbar';
+import Login from './Login';
+import Signup from './Signup';
+import Mission from './Mission';
+import Spacecrafts from './Spacecrafts';
+import Spacecraft from './Spacecraft';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const SpaceContext = createContext();
+export const useSpace = () => useContext(SpaceContext);
+
+async function checkAuth() {
+  const response = await fetch('/api/check-auth');
+  const data = await response.json();
+  return data.isAuthenticated;
+}
 
 function App() {
   const [celestialBodies, setCelestialBodies] = useState([]);
@@ -8,44 +25,28 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
+    async function checkLoginStatus() {
       const auth = await checkAuth();
       setIsLoggedIn(auth);
-    };
+    }
     checkLoginStatus();
   }, []);
 
-  const toggleCelestialBody = (body) => {
-    const exists = celestialBodies.some(item => item.id === body.id);
-    let updatedCelestialBodies = exists ? celestialBodies.filter(item => item.id !== body.id) : [...celestialBodies, body];
-    setCelestialBodies(updatedCelestialBodies);
-    updateDestinations(updatedCelestialBodies);
-  };
-
-  const updateDestinations = (bodies) => {
-    const total = bodies.reduce((acc, curr) => acc + parseFloat(curr.distance), 0);
-    setTotalDistance(total);
-    const names = bodies.map(b => b.name).join(', ');
-    setDestinations(names);
-  };
-
   return (
-    <Router>
-      <SpaceContext.Provider value={{ celestialBodies, totalDistance, destinations, toggleCelestialBody }}>
+    <BrowserRouter>
+      <SpaceContext.Provider value={{ celestialBodies, totalDistance, destinations }}>
         <div className="App">
           <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
           <Routes>
             <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/missions" element={isLoggedIn ? <Missions /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/mission" element={isLoggedIn ? <Mission /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/spacecrafts" element={isLoggedIn ? <Spacecrafts /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/explore" element={isLoggedIn ? <Explore /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/spacecrafts/:id" element={<Spacecraft />} />
           </Routes>
         </div>
       </SpaceContext.Provider>
-    </Router>
+    </BrowserRouter>
   );
 }
 
