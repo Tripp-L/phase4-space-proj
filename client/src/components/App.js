@@ -1,33 +1,41 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import Mission from './Mission';
-import CelestialBody from './CelestialBody';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Dashboard from './components/Dashboard';
+import Missions from './components/Missions';
+import Spacecrafts from './components/Spacecrafts';
+import Explore from './components/Explore';
+import Spacecraft from './components/Spacecraft';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SpaceContext = createContext();
-
 export const useSpace = () => useContext(SpaceContext);
 
-function App() {
-  
-  const [celestialBodies, setCelestialBodies] = useState(() => {
-    const localData = localStorage.getItem('celestialBodies');
-    return localData ? JSON.parse(localData) : [];
+
+function checkAuth() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(true);
+    }, 1000);
   });
-  const [totalDistance, setTotalDistance] = useState(() => {
-    const localData = localStorage.getItem('totalDistance');
-    return localData ? parseFloat(localData) : 0;
-  });
-  const [destinations, setDestinations] = useState(() => {
-    return localStorage.getItem('destinations') || '';
-  });
-  const [showMission, setShowMission] = useState(true);
+}
+
+const App = () => {
+  const [celestialBodies, setCelestialBodies] = useState([]);
+  const [totalDistance, setTotalDistance] = useState(0);
+  const [destinations, setDestinations] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    
-    localStorage.setItem('celestialBodies', JSON.stringify(celestialBodies));
-    updateDestinations(celestialBodies);
-  }, [celestialBodies]);
+    const checkLoginStatus = async () => {
+      const auth = await checkAuth();
+      setIsLoggedIn(auth);
+    };
+    checkLoginStatus();
+  }, []);
 
   const toggleCelestialBody = (body) => {
     const exists = celestialBodies.find(item => item.id === body.id);
@@ -38,26 +46,34 @@ function App() {
       updatedCelestialBodies = [...celestialBodies, body];
     }
     setCelestialBodies(updatedCelestialBodies);
+    updateDestinations(updatedCelestialBodies);
   };
 
   const updateDestinations = (bodies) => {
     const total = bodies.reduce((acc, curr) => acc + parseFloat(curr.distance), 0);
     setTotalDistance(total);
-    localStorage.setItem('totalDistance', total.toString());
     const names = bodies.map(b => b.name).join(', ');
     setDestinations(names);
-    localStorage.setItem('destinations', names);
   };
 
   return (
-    <SpaceContext.Provider value={{ celestialBodies, totalDistance, destinations, toggleCelestialBody }}>
-      <div className="App">
-        <button onClick={() => setShowMission(true)}>Show Missions</button>
-        <button onClick={() => setShowMission(false)}>Show Celestial Bodies</button>
-        {showMission ? <Mission /> : <CelestialBody />}
-      </div>
-    </SpaceContext.Provider>
+    <Router>
+      <SpaceContext.Provider value={{ celestialBodies, totalDistance, destinations, toggleCelestialBody }}>
+        <div className="App">
+          <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+          <Routes>
+            <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/missions" element={isLoggedIn ? <Missions /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/spacecrafts" element={isLoggedIn ? <Spacecrafts /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/explore" element={isLoggedIn ? <Explore /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/spacecrafts/:id" element={<Spacecraft />} />
+          </Routes>
+        </div>
+      </SpaceContext.Provider>
+    </Router>
   );
-}
+};
 
 export default App;
