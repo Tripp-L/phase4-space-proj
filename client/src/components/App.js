@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Spacecrafts from "./Spacecrafts";
@@ -35,7 +36,3 @@ function App() {
         </Route>
       </Routes>
     </div>
-  );
-}
-
-export default App;
