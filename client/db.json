@@ -5,7 +5,7 @@
             "name": "Odyssey",
             "speed": 25000,
             "fuel_log": 12500,
-            "equipment": ["Long-range scanner", "Cryogenic stasis pods", "Sample collection arm"],
+            "equipment": "Long-range scanner, Cryogenic stasis pods, Sample collection arm",
             "image": "odyssey.jpg"
           },
           {
@@ -13,7 +13,7 @@
             "name": "Voyager II",
             "speed": 32000,
             "fuel_log": 9800,
-            "equipment": ["High-resolution camera", "Radiation shield", "Interstellar radio"],
+            "equipment": "High-resolution camera, Radiation shield, Interstellar radio",
             "image": "voyager2.jpg"
           },
           {
@@ -21,7 +21,7 @@
             "name": "Aurora",
             "speed": 45000,
             "fuel_log": 28000,
-            "equipment": ["Plasma drive", "Nanobot repair system", "Quantum entanglement communicator"],
+            "equipment": "Plasma drive, Nanobot repair system, Quantum entanglement communicator",
             "image": "aurora.jpg"
           },
           {
@@ -29,7 +29,7 @@
             "name": "Pioneer",
             "speed": 18000,
             "fuel_log": 6000,
-            "equipment": ["Solar panels", "Asteroid mining laser", "Hydroponic garden"],
+            "equipment": "Solar panels, Asteroid mining laser, Hydroponic garden",
             "image": "pioneer.jpg"
           },
           {
@@ -37,7 +37,7 @@
             "name": "Galactica",
             "speed": 38000,
             "fuel_log": 15000,
-            "equipment": ["Hyperspace engine", "Drone fleet", "Bio-dome"],
+            "equipment": "Hyperspace engine, Drone fleet, Bio-dome",
             "image": "galactica.jpg"
           }
     ]

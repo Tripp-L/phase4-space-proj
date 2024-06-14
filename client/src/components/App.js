@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Spacecrafts from './Spacecrafts';
-import Spacecraft from './Spacecraft';
-import Navbar from './Navbar';
+import React, { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import Spacecrafts from "./Spacecrafts";
+import Spacecraft from "./Spacecraft";
+import Navbar from "./Navbar";
 
 function App() {
   const [spacecrafts, setSpacecrafts] = useState([]);
@@ -10,11 +10,11 @@ function App() {
   useEffect(() => {
     const fetchSpacecrafts = async () => {
       try {
-        const response = await fetch('http://localhost:3000/spacecrafts');
+        const response = await fetch("http://localhost:3000/spacecrafts");
         const data = await response.json();
-        setSpacecrafts(data);
+        setSpacecrafts(data.spacecrafts);
       } catch (error) {
-        console.error('Error fetching spacecraft:', error);
+        console.error("Error fetching spacecraft:", error);
       }
     };
 
@@ -29,10 +29,9 @@ function App() {
     <div>
       <Navbar />
       <Routes>
-        {/* Other routes */}
-        <Route path="/spacecrafts" > 
-            <Route index element={<Spacecrafts spacecrafts={spacecrafts} onDelete={handleDeleteSpacecraft} />} />
-            <Route path=":id" element={<Spacecraft onDelete={handleDeleteSpacecraft} />} /> 
+        <Route path="/spacecrafts"> 
+          <Route index element={<Spacecrafts spacecrafts={spacecrafts} onDelete={handleDeleteSpacecraft} />} />
+          <Route path=":id" element={<Spacecraft spacecrafts={spacecrafts} onDelete={handleDeleteSpacecraft} />} /> 
         </Route>
       </Routes>
     </div>
