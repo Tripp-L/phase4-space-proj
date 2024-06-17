@@ -1,57 +1,58 @@
+import '../player.css'
+import { useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 let User = null 
-// User is gonna equal the player that logs in, set attributes based on what character chosen. 
-// Can possibly implement a view character section where they can set their info. Use the nav bar in mission and 
-// celestial body pages to link back to character
-// after login, possible character creation? They have to choose male female alien, then set their names
-function PlayerSelectionCards(){
-    let selectionHeading = <h1>Choose your character below</h1>
+function Player({setImg, setArrow}){
+    let confirmationSelection = false 
+    let selectionHeading = <h1 className="selectionHeading" >Select</h1>
     
-    let male = <div id='male' onClick={() => setUser(User)}> 
-    {/*  Design the separate cards in css, add hover effect, add timers, switch between three pics, first pic stay on 
-    for more than 5, when hover out reset to first pic. Add border effect? Add zoom effect with hovering over effect
-    handle this on ALL cards  */}
+    let male = <div id='male' className="selectionBox" onClick={() => handleImg('male')}> 
                     <h1>Male Astronaut</h1>
-                    <img src='image' alt='image of male astronaut'></img>
-                    <p>Description of male astronaut</p>
-                    <ul>
-                        <li>Possible Implementation of characteristics listed below?</li>
-                    </ul>
+                    <img src='https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg' alt='image of male astronaut'></img>
     </div>
-    let female = <div id='female' onClick={() => setUser(User)}>
+    let female = <div id='female' className="selectionBox" onClick={() => handleImg('female')}>
                     <h1>female Astronaut</h1>
-                    <img src='image' alt='image of female astronaut'></img>
-                    <p>Description of male astronaut</p>
-                    <ul>
-                        <li>Possible Implementation of characteristics listed below?</li>
-                    </ul>
+                    <img src='https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg' alt='image of female astronaut'></img>
     </div>
-    let alien = <div id='alien' onClick={() => setUser(User)}>
-    {/* follow same design scheme for all cards, set user will be a state set function, add a SELECT? with hover over event
-    then SELECT {BLANK} welcome to {BLANK} federation or whatever we decide, set time, stay on page for 5 seconds.
-    POSSIBLE STRETCH GOAL: fade in black after 5 seconds, fade in text that desribes their mission, then enter
-    spacecraft react component */}
+    let alien = <div id='alien' className="selectionBox" onClick={() => handleImg('alien')}>
                     <h1>alien</h1>
-                    <img src='image' alt='image of alien'></img>
-                    <p>Description of male astronaut</p>
-                    <ul>
-                        <li>Possible Implementation of characteristics listed below?</li>
-                    </ul>
-                    <a href="leads to the spacecraft react component so player can choose spacecraft"></a>
+                    <img src='https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg' alt='image of alien'></img>
     </div>
+    let create = <NavLink to="/player-creation">
+                    <div id='create' className='selectionBox' >
+                    <Link to="/player-creation">Create Your Own!</Link>
+                    <img id='createImage' src='https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg'></img>
+        </div>
+    </NavLink>
 
-    function handleEffects() {
-        console.log('hello')
+
+    function handleImg(user){
+        if (user == 'male'){
+            let images = ['https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg', 'https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg', 'https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg']
+            setImg(images)
+            setArrow(true)
+        } else if (user == 'female'){
+            let images = ['https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg', 'https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg', 'https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg']
+            setImg(images)
+            setArrow(true)
+        } else if (user == 'alien'){
+            let images = ['https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg', 'https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg', 'https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg']
+            setImg(images)
+            setArrow(true)
+        } 
     }
-    handleEffects()
-    // handleEffects is gonna handle different effects based on which User state is setInterval, checks if user is set then 
-    // decides what to do based on that info. 
+
+    
     return (
-        <>
+        <div>
             {selectionHeading}
             {male}
-            {female}
             {alien}
-        </>
+            {female}
+            {create}
+            {/* {confirmationBox} */}
+        </div>
     )
 }
-export default PlayerSelectionCards
+export default Player
+
