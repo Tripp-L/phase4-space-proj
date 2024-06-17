@@ -1,0 +1,35 @@
+.navbar {
+    position: fixed; /* Keep it fixed at the top */
+    top: 0;          /* Position at the very top */
+    width: 100%;     /* Take up full width */
+    z-index: 1000;   /* Ensure it's above other content */
+  }
+  
+  /* Customize Navbar Height (optional) */
+  .navbar {
+    min-height: 40px; /* Adjust as needed */
+  }
+  
+  /* Link Styling */
+  .navbar-nav .nav-link {
+    font-weight: bold;
+    padding: 0.5rem 1rem;  /* Adjust padding for spacing */
+  }
+  
+  .navbar-brand{
+    margin-left: 25px; /* Add left margin to brand */
+  }
+  
+  .navbar-toggler {
+    border:blue ; /* Remove default border */
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .App {
+    padding-top: 56px; /* Ensure content is not hidden behind the fixed navbar */
+  }

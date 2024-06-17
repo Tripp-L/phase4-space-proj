@@ -9,9 +9,9 @@ html, body {
   .container {
     padding: 0; /* Remove padding to use full width */
     min-height: 100vh; /* Full viewport height */
-    background-image: url('https://cdn.theatlantic.com/thumbor/EmW-E0FwUa0MhOoGk0BXYyBiBm0=/0x0:1718x1718/1718x1718/media/files/est/space-calculator/background6.jpg');
+    background-image: url('https://cdn.theatlantic.com/thumbor/EmW-E0FwUa0MhOoGk0BXYyBiBm0=/0x0:1718x1718/1718x1718/media/files/est/space-calculator/background6.jpg'); 
     background-size: cover;
-    background-position: center;
+    background-repeat: no-repeat;
     background-attachment: fixed; /* Ensures background covers the full page and stays fixed during scroll */
     width: 100%; /* Full viewport width */
     margin: 0; /* Remove default margin */

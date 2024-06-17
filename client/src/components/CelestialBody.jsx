@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSpace } from './App';
+import { useSpace } from '../App';
 import './CelestialBody.css';
 
 const CelestialBody = () => {

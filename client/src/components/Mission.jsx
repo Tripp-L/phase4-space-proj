@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Mission.css';
-import { useSpace } from './App';
+import { useSpace } from '../App';
 import { Button, Card, ListGroup, ButtonGroup } from 'react-bootstrap';
 
 const tasks = [
