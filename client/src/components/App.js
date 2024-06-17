@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Spacecrafts from "./Spacecrafts";
 import NewSpacecraftForm from "./NewSpacecraftForm";
+import Navbar from "./Navbar";
 
 function App() {
   const [spacecrafts,setSpacecrafts] = useState([
@@ -55,6 +56,7 @@ function App() {
 
   return (
     <div>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Spacecrafts spacecrafts={spacecrafts} setSpacecrafts={setSpacecrafts} onDelete={handleDelete} />} />
         <Route 
