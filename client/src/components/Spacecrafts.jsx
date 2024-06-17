@@ -1,74 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import './spacecrafts.css';
 
-function Spacecrafts({ onDelete }) {
-  const [spacecrafts, setSpacecrafts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+function Spacecrafts({ spacecrafts, setSpacecrafts, onDelete }) {
+  const [visibleDetails, setVisibleDetails] = useState({});
+  const [editMode, setEditMode] = useState(null);
+  const [editedCraft, setEditedCraft] = useState({});
 
-  useEffect(() => {
-    const fetchSpacecrafts = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/spacecrafts');
+  const toggleDetails = (id) => {
+    setVisibleDetails((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
+  };
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch spacecraft: ${response.statusText}`);
-        }
+  const handleEditClick = (craft) => {
+    setEditMode(craft.id);
+    setEditedCraft(craft);
+  };
 
-        const data = await response.json();
-        setSpacecrafts(data);
-      } catch (error) {
-        console.error('Error fetching spacecraft:', error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handleEditChange = (e) => {
+    setEditedCraft({ ...editedCraft, [e.target.name]: e.target.value });
+  };
 
-    fetchSpacecrafts();
-  }, []); 
-
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3000/spacecrafts/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        onDelete(id);
-      } else {
-        console.error("Failed to delete spacecraft:", response.statusText);
-        setError("Failed to delete spacecraft.");
-      }
-    } catch (error) {
-      console.error("Error deleting spacecraft:", error);
-      setError("An error occurred while deleting the spacecraft.");
-    }
+  const handleSaveEdit = (id) => {
+    setSpacecrafts(prevSpacecrafts => 
+      prevSpacecrafts.map(craft => (craft.id === id ? editedCraft : craft))
+    );
+    setEditMode(null);
   };
 
   return (
-    <div>
-      <h2>Spacecrafts</h2>
+    <div className="container spacecraft-container">
+      <h1 className="spacecraft-title my-5">🚀 Spacecrafts 🚀</h1>
 
-      {loading ? (
-        <div>Loading spacecrafts...</div> 
-      ) : error ? (
-        <div className="error-message">{error}</div> 
-      ) : spacecrafts.length === 0 ? (
-        <div>No spacecraft available.</div> 
-      ) : (
-        <ul>
-          {spacecrafts.map((spacecraft) => ( 
-            <li key={spacecraft.id}>
-              <Link to={`/spacecrafts/${spacecraft.id}`}>{spacecraft.name}</Link>
-              <button onClick={() => handleDelete(spacecraft.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="row">
+        {spacecrafts.map((craft) => (
+          <div key={craft.id} className="col-md-4 mb-3">
+            <div className="card spacecraft-card" onClick={() => toggleDetails(craft.id)}>
+              <img src={craft.image} className="card-img-top" alt={craft.name} />
+              <div className="card-body">
+                <h5 className="card-title">🚀 <strong>{craft.name}</strong> 🚀</h5>
+
+                {editMode === craft.id ? (
+                  // Edit Mode
+                  <div className="details">
+                    <input type="text" name="name" value={editedCraft.name} onChange={handleEditChange} />
+                    <input type="number" name="speed" value={editedCraft.speed} onChange={handleEditChange} />
+                    <input type="text" name="equipment" value={editedCraft.equipment} onChange={handleEditChange} />
+                    <input type="number" name="fuel_log" value={editedCraft.fuel_log} onChange={handleEditChange} />
+                    <input type="url" name="image" value={editedCraft.image} onChange={handleEditChange} />
+                    
+                    <button onClick={() => handleSaveEdit(craft.id)} className="btn btn-success">Save</button>
+                    <button onClick={() => setEditMode(null)} className="btn btn-secondary">Cancel</button>
+                  </div>
+                ) : visibleDetails[craft.id] ? (
+                  // View Mode (details expanded)
+                  <div className="details">
+                    <p className="card-text">Speed: {craft.speed}</p>
+                    <p className="card-text">Fuel Log: {craft.fuel_log}</p>
+                    <p className="card-text">Equipment: {craft.equipment}</p>
+                    <button onClick={() => handleEditClick(craft)} className="btn btn-primary">Edit</button>
+                    <button onClick={() => onDelete(craft.id)} className="btn btn-danger">Delete</button>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
       <Link to="/spacecrafts/new">
-        <button>Create New Spacecraft</button>
+        <button className="new-btn">Create New Spacecraft</button>
       </Link>
     </div>
   );
