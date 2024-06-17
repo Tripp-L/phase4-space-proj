@@ -78,3 +78,4 @@ function Spacecrafts({ spacecrafts, setSpacecrafts, onDelete }) {
 }
 
 export default Spacecrafts;
+
