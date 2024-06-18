@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import MyNavbar from './components/NavBar';
+import MyNavbar from './components/Navbar';
 import Spacecrafts from './components/Spacecrafts';
 import NewSpacecraftForm from './components/NewSpaceCraftForm';
 import Mission from './components/Mission';
