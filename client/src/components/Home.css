@@ -1,12 +1,12 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Orbitron', sans-serif;
-    background-image: url('https://cdn.theatlantic.com/thumbor/EmW-E0FwUa0MhOoGk0BXYyBiBm0=/0x0:1718x1718/1718x1718/media/files/est/space-calculator/background6.jpg'); 
-    background-size: cover;
-    background-repeat: no-repeat; 
-  }
-  
-  .App {
-    padding-top: 56px; /* Ensure content is not hidden behind the fixed navbar */
-  }
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('https://cdn.theatlantic.com/thumbor/EmW-E0FwUa0MhOoGk0BXYyBiBm0=/0x0:1718x1718/1718x1718/media/files/est/space-calculator/background6.jpg'); 
+  background-size: cover;
+  background-repeat: no-repeat; 
+}
+
+.App {
+  padding-top: 56px; 
+}
