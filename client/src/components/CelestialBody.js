@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSpace } from './App'; 
+import { useSpace } from '../App'; 
 
 const CelestialBody = () => {
     const [visibleDetails, setVisibleDetails] = useState({});
