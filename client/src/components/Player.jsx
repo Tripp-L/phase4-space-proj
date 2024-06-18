@@ -55,4 +55,3 @@ function Player({setImg, setArrow}){
     )
 }
 export default Player
-

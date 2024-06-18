@@ -88,22 +88,3 @@ function PlayerForm( {setVisiblePlayerImage, visiblePlayerImage}){
 }
 
 export default PlayerForm
-{/* <form onSubmit={handleSubmit} id="playerForm">
-                <label for="fname" className='labels'>User</label>
-                <br></br>
-                <input type="text" id="userCreationText" className="inputCreation"name="fname" 
-                onChange={(e) => setUser(e.target.value)} value={user}></input>
-                <br></br>
-                <label for="image" className="labels">Image</label>
-                <br></br>
-                <input type="text" id="imageCreationText" name="image" className="inputCreation" 
-                onChange={(e) => setImages(e.target.value)}
-                value={images}></input>
-                <br></br>
-                <p id="creationSelect"></p>
-                <label for="lore" className="labels">Lore</label>
-                <br></br>
-                <textarea id='loreCreationText' name="lore" rows='4' cols='50' maxLength='600'
-                onChange={(e) => setLore(e.target.value)} value={lore}></textarea>
-                <br></br> 
-                </form>*/}
