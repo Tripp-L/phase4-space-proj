@@ -1,4 +1,4 @@
-import '../player.css';
+import './player.css';
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 let User = null 

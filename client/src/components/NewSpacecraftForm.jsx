@@ -61,4 +61,3 @@ function NewSpacecraftForm({ spacecrafts, setSpacecrafts }) {
 }
 
 export default NewSpacecraftForm;
-
