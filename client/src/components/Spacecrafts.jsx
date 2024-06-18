@@ -1,79 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import Spacecraft from './Spacecraft';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './spacecrafts.css';
 
-function Spacecrafts() {
-    const [spacecrafts, setSpacecrafts] = useState([]);
-    const [newSpacecraft, setNewSpacecraft] = useState({
-        name: '',
-        speed: 0,
-        fuel_log: 0,
-        equipment: '',
-    });
+function Spacecrafts({ spacecrafts, setSpacecrafts, onDelete }) {
+  const [visibleDetails, setVisibleDetails] = useState({});
+  const [editMode, setEditMode] = useState(null);
+  const [editedCraft, setEditedCraft] = useState({});
 
-    useEffect(() => {
-        fetch('/spacecrafts')
-        .then(response => response.json())
-        .then(data => setSpacecrafts(data))
-        .catch(error => console.error('Error fetching spacecraft:', error));
-    }, []);
+  const toggleDetails = (id) => {
+    setVisibleDetails((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
+  };
 
-    const handleUpdate = (updatedSpacecraft) => {
-        setSpacecrafts(prevSpacecrafts =>
-            prevSpacecrafts.map(s => s.id === updatedSpacecraft.id ? updatedSpacecraft :  s)
-        );
-    };
+  const handleEditClick = (craft) => {
+    setEditMode(craft.id);
+    setEditedCraft(craft);
+  };
 
-    const handleDelete = (id) => {
-        setSpacecrafts(prevSpacecrafts => prevSpacecrafts.filter(s => s.id !== id));
-    };
+  const handleEditChange = (e) => {
+    setEditedCraft({ ...editedCraft, [e.target.name]: e.target.value });
+  };
 
-    const handleAddSpacecraft = async () => {
-        try {
-            const response = await fetch('/spacecrafts', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newSpacecraft),
-            });
+  const handleSaveEdit = (id) => {
+    setSpacecrafts(prevSpacecrafts => 
+      prevSpacecrafts.map(craft => (craft.id === id ? editedCraft : craft))
+    );
+    setEditMode(null);
+  };
 
-            if (response.ok) {
-                const newSpacecraftData = await response.json();
-                setSpacecrafts([...spacecrafts, newSpacecraftData]);
-                setNewSpacecraft({
-                    name: '',
-                    speed: 0,
-                    fuel_log: 0,
-                    equipment: '',
-                });
-                } else {
-                    console.error('Failed to add spacecraft:', response)
-                }
-            } catch (error) {
-              console.error('Error adding spacecraft:', error);
-            }
-          };
-        
-          return (
-            <div className="spacecrafts">
-              <h2>Your Spacecrafts</h2>
-              <div>
-                <h3>Add New Spacecraft</h3>
-                <input type="text" value={newSpacecraft.name} onChange={(e) => setNewSpacecraft({ ...newSpacecraft, name: e.target.value })} placeholder="Name" />
-                <input type="number" value={newSpacecraft.speed} onChange={(e) => setNewSpacecraft({ ...newSpacecraft, speed: parseInt(e.target.value) })} placeholder="Speed" />
-                <input type="number" value={newSpacecraft.fuel_log} onChange={(e) => setNewSpacecraft({ ...newSpacecraft, fuel_log: parseInt(e.target.value) })} placeholder="Fuel Log" />
-                <input type="text" value={newSpacecraft.equipment} onChange={(e) => setNewSpacecraft({ ...newSpacecraft, equipment: e.target.value })} placeholder="Equipment" />
-                <button onClick={handleAddSpacecraft}>Add Spacecraft</button>
+  return (
+    <div className="container spacecraft-container">
+      <h1 className="spacecraft-title my-5">🚀 Spacecrafts 🚀</h1>
+
+      <div className="row">
+        {spacecrafts.map((craft) => (
+          <div key={craft.id} className="col-md-4 mb-3">
+            <div className="card spacecraft-card" onClick={() => toggleDetails(craft.id)}>
+              <img src={craft.image} className="card-img-top" alt={craft.name} />
+              <div className="card-body">
+                <h5 className="card-title">🚀 <strong>{craft.name}</strong> 🚀</h5>
+
+                {editMode === craft.id ? (
+                  // Edit Mode
+                  <div className="details">
+                    <input type="text" name="name" value={editedCraft.name} onChange={handleEditChange} />
+                    <input type="number" name="speed" value={editedCraft.speed} onChange={handleEditChange} />
+                    <input type="text" name="equipment" value={editedCraft.equipment} onChange={handleEditChange} />
+                    <input type="number" name="fuel_log" value={editedCraft.fuel_log} onChange={handleEditChange} />
+                    <input type="url" name="image" value={editedCraft.image} onChange={handleEditChange} />
+                    
+                    <button onClick={() => handleSaveEdit(craft.id)} className="btn btn-success">Save</button>
+                    <button onClick={() => setEditMode(null)} className="btn btn-secondary">Cancel</button>
+                  </div>
+                ) : visibleDetails[craft.id] ? (
+                  // View Mode (details expanded)
+                  <div className="details">
+                    <p className="card-text">Speed: {craft.speed}</p>
+                    <p className="card-text">Fuel Log: {craft.fuel_log}</p>
+                    <p className="card-text">Equipment: {craft.equipment}</p>
+                    <button onClick={() => handleEditClick(craft)} className="btn btn-primary">Edit</button>
+                    <button onClick={() => onDelete(craft.id)} className="btn btn-danger">Delete</button>
+                  </div>
+                ) : null}
               </div>
-        
-              {spacecrafts.map(spacecraft => (
-                <Spacecraft 
-                  key={spacecraft.id}
-                  spacecraft={spacecraft}
-                  onUpdate={handleUpdate} 
-                  onDelete={handleDelete} 
-                />
-              ))}
             </div>
-          );
-        }
-        
-export default Spacecrafts;
+          </div>
+        ))}
+      </div>
+
+      <Link to="/spacecrafts/new">
+        <button className="new-btn">Create New Spacecraft</button>
+      </Link>
+    </div>
+  );
+}
+
+export default Spacecrafts

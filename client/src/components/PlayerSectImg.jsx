@@ -20,7 +20,8 @@ function PlayerSectImg({img, setImg, arrow, setArrow}){
     return (
         <div className={arrow ? "playerImageSect": "invisibleImageSect"}>
             <img id="playerImageRotation" src={images[currentImage]}></img>
-            <img  src='https://ih1.redbubble.net/image.1114877515.6415/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg' onClick={() => handleImgChange()} className="visibleArrow"></img>
+            <img  src='https://studio.code.org/v3/assets/kT_AOOARKKm6wZ_ZvqCkJYoSjzvb-yhHUTRrTUGJEYM/rocket2.gif' onClick={() => handleImgChange()} className="visibleArrow"></img>
+            {/* change image */}
             <p>Select this space explorer?</p>
             <NavLink to='/'>
                 <button id="yesButton" className='playerButton' onClick={() => handleConfirmation('Yes')}>Yes</button>

@@ -4,7 +4,7 @@ import { Link, NavLink } from 'react-router-dom'
 let User = null 
 function Player({setImg, setArrow}){
     let confirmationSelection = false 
-    let selectionHeading = <h1 className="selectionHeading" >Select</h1>
+    let selectionHeading = <h1 className="selectionHeading" >🧑‍🚀Select or Create Your Own Astronaut!🧑‍🚀</h1>
     
     let male = <div id='male' className="selectionBox" onClick={() => handleImg('male')}> 
                     <h1>Male Astronaut</h1>
