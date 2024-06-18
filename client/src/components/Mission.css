@@ -162,7 +162,7 @@ html, body {
   .add-mission-form-container {
     font-family: 'Orbitron', sans-serif;
     width: 35.5%; /* Adjusted width */
-    min-height: 200px; /* Increase vertical length */
+    min-height: 280px; /* Increase vertical length */
     margin: 20px auto; /* Center it horizontally and add vertical space */
     padding: 20px;
     border: 2px solid rgba(180, 220, 255, 0.85);
