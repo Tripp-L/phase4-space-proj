@@ -3,9 +3,6 @@ import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
 import { Link, useLocation } from "react-router-dom";
 import './Nav.css'
-import Image from 'react-bootstrap/Image';
-import { Link, useLocation } from "react-router-dom";
-import './Nav.css'
 
 function Navbar() {
     const location = useLocation();
