@@ -10,6 +10,7 @@ import Player from './components/Player';
 import './components/spacecrafts.css';
 import './components/Mission.css';
 import './App.css';
+import './components/Nav.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container'; 
 
