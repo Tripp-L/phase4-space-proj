@@ -7,6 +7,8 @@ import Mission from './components/Mission';
 import CelestialBody from './components/CelestialBody';
 import Home from './components/Home';
 import Player from './components/Player';
+import Login from './components/Login';
+import './components/Login.css'
 import './components/spacecrafts.css';
 import './components/Mission.css';
 import './App.css';
@@ -125,6 +127,7 @@ function App() {
               <Route path="/missions" element={<Mission />} />
               <Route path="/spacecrafts" element={<Spacecrafts spacecrafts={spacecrafts} onDelete={handleDeleteSpacecraft} />} />
               <Route path="/spacecrafts/new" element={<NewSpacecraftForm spacecrafts={spacecrafts} setSpacecrafts={setSpacecrafts} />} />
+              <Route path="/login" element={<Login />} />
             </Routes>
           </Container>
         </div>  
