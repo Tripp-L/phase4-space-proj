@@ -1,17 +1,13 @@
 # #!/usr/bin/env python3
+from random import randint, choice as rc
 
-# # Standard library imports
-# from random import randint, choice as rc
+from faker import Faker
 
-# # Remote library imports
-# from faker import Faker
+from app import app
+from models import db
 
-# # Local imports
-# from app import app
-# from models import db
-
-# if __name__ == '__main__':
-#     fake = Faker()
-#     with app.app_context():
-#         print("Starting seed...")
-#         # Seed code goes here!
+if __name__ == '__main__':
+    fake = Faker()
+    with app.app_context():
+        print("Starting seed...")
+    
