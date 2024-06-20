@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 import os
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
@@ -27,6 +28,20 @@ class PlayerSchema(SerializerMixin):
     class Meta:
         model = Player
         fields = ('id', 'name', 'age', 'origin', 'imageurl')
+=======
+from flask import request
+from flask_restful import Resource
+
+
+from config import app, db, api
+
+@app.route('/')
+def index():
+    return '<h1>Project Server</h1>'
+
+
+if __name__ == '__main__':
+    app.run(port=5555, debug=True)
 
 class SpacecraftSchema(SerializerMixin):
     class Meta:
