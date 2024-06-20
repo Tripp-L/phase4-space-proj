@@ -7,13 +7,13 @@ import Mission from './components/Mission';
 import CelestialBody from './components/CelestialBody';
 import Home from './components/Home';
 import Player from './components/Player';
-import Login from './components/Login';
-import './components/Login.css'
+import Login from './components/Login'
 import './components/spacecrafts.css';
 import './components/Mission.css';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container'; 
+; 
 
 const SpaceContext = createContext();
 export const useSpace = () => useContext(SpaceContext);
