@@ -10,7 +10,6 @@ class Player(db.Model, SerializerMixin):
     username = db.Column(db.String(), unique=True, nullable=False)
     email = db.Column(db.String(), unique=True, nullable=False)
     _password_hash = db.Column(db.String())
-    have_set_player = db.Column(db.Integer)
 
     serialize_rules = ('-missions.player', '-_password_hash')
 

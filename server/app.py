@@ -1,5 +1,6 @@
 
 #!/usr/bin/env python3
+
 import os
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
@@ -57,10 +58,12 @@ def create_app():
     @app.errorhandler(422)
     def unprocessable_entity_error(error):
         return jsonify({'error': 'Unprocessable entity'}), 422
+    
+    @app.route('/')
+    def index():
+        return app.send_static_file('index.html')
 
-@app.route('/')
-def index():
-    return app.send_static_file('index.html')
+    return app
 
 if __name__ == '__main__':
     app = create_app()
