@@ -1,6 +1,7 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
-from app import db, bcrypt, ma  # Import db, bcrypt, and ma from app.py
+from extensions import db, bcrypt  # Import db, bcrypt, and ma from app.py
+
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 class Player(db.Model, SerializerMixin):
@@ -10,6 +11,7 @@ class Player(db.Model, SerializerMixin):
     username = db.Column(db.String(), unique=True, nullable=False)
     email = db.Column(db.String(), unique=True, nullable=False)
     _password_hash = db.Column(db.String())
+    have_set_player = db.Column(db.Integer)
 
     serialize_rules = ('-missions.player', '-_password_hash')
 
