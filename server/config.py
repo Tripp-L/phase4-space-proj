@@ -1,5 +1,6 @@
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> main
@@ -37,6 +38,8 @@ CORS(app)
 =======
 CORS(app)
 
+=======
+>>>>>>> main
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'supersecretkey')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///app.db')
