@@ -3,27 +3,6 @@ import './Mission.css';
 import { useSpace } from '../App';
 import { Button, Card, ListGroup, ButtonGroup } from 'react-bootstrap';
 localStorage.clear()
-const tasks = [
-    'Observation',
-    'Equipment Repair',
-    'Surface Test',
-    'Collect Debris',
-    'Alien Contact'
-];
-
-const equipment = [
-    'Night Vision Goggles',
-    'Universal Translator Radio',
-    'Laser',
-    'Shovels',
-    'Sample Containers',
-    'Cameras',
-    'Grab Poles',
-    'Collection Nets',
-    'Beakers',
-    'Toolbox',
-    'Gift Offerings'
-];
 
 const initialPlayer = [
     {
@@ -69,22 +48,7 @@ const Player = () => {
     const { celestialBodies, totalDistance, destinations } = useSpace();
     const [form, setForm] = useState({ name: '', description: '', imageurl: '', age: '', origin: '' });
 
-    useEffect(() => {
-        const initTasks = {};
-        const initEquipment = {};
-        players.forEach(mission => {
-            if (mission.name == 'Alien'){
-                initTasks[mission.id] = ["Observation", "Equipment Repair", "Surface Test", "Collect Debris", "Alien Contact"];
-                initEquipment[mission.id] = ["Ray Gun", "Jet Pack", "Nano-repair Module", "Environmental Analyzer", "Biometric Scanner", "Exosuit", "Gravity Manipulating Gun", "Antigravity Levitator"];
-            } else{
-                initTasks[mission.id] = ["Observation", "Equipment Repair", "Surface Test", "Collect Debris", "Alien Contact"];
-                initEquipment[mission.id] = ["Night Vision Goggles", "Universal Translator Radio", "Laser", "Shovels", "Sample Containers", "Cameras", "Grab Poles", "Collection Nets", "Beakers", "Toolbox", "Gift Offerings"];
-            }
-                
-        });
-        setAvailableTasks(initTasks);
-        setAvailableEquipment(initEquipment);
-    }, [players]);
+    
 
     const handleMissionSelect = id => {
         setplayerId(id);
@@ -256,7 +220,7 @@ const Player = () => {
                                         <>
                                             <Card.Text className="card-section">🚀 {mission.description} </Card.Text>
                                             <ButtonGroup vertical>
-                                                <Button variant="primary" onClick={() => handleMissionSelect(mission.id)}>Select Mission</Button>
+                                                <Button variant="primary" onClick={() => handleMissionSelect(mission.id)}>Select Player</Button>
                                                 {mission.isNew && (
                                                     <Button variant="danger" className="mt-2" onClick={() => handleDelete(mission.id)}>Delete Mission</Button>
                                                 )}
@@ -270,7 +234,7 @@ const Player = () => {
                 )}
             </div>
             <div className="add-mission-form-container">
-                <h3>🛰️ Make An Explorer 🛰️</h3>
+                <h3>🛰️ Explorer 🛰️</h3>
                 <form className="add-mission-form" onSubmit={handleSubmit}>
                     <input type="text" className="form-control" placeholder="Name" name="name" value={form.name} onChange={handleChange} />
                     <input type="text" className="form-control" placeholder="Description" name="description" value={form.description} onChange={handleChange} />
