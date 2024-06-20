@@ -1,6 +1,10 @@
 
-from flask import Flask, jsonify
-from flask_restful import Api
+#!/usr/bin/env python3
+import os
+from flask import Flask, jsonify, request
+from flask_restful import Resource, Api
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_cors import CORS
 from .config import Config
 from .extensions import db, migrate, bcrypt, ma, jwt
