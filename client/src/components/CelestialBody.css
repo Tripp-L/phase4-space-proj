@@ -125,7 +125,7 @@ li::before {
     font-family: 'Orbitron', sans-serif;
     width: 35%; /* Adjusted width to cover the whole form */
     max-width: 600px; /* Maximum width for larger screens */
-    min-height: 380px; /* Increase vertical length */
+    min-height: 550; /* Increase vertical length */
     margin: 20px auto; /* Center it horizontally and add vertical space */
     padding: 20px;
     border: 2px solid rgba(180, 220, 255, 0.85);
