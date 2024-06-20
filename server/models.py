@@ -1,7 +1,6 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
-from extensions import db, bcrypt  # Import db, bcrypt, and ma from app.py
-
+from .extensions import db, bcrypt, ma  # Import db, bcrypt, and ma from extensions
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 class Player(db.Model, SerializerMixin):
@@ -50,6 +49,11 @@ class Spacecraft(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<Spacecraft {self.name}>'
 
+class SpacecraftSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Spacecraft
+        load_instance = True
+
 class Mission(db.Model, SerializerMixin):
     __tablename__ = 'missions'
 
@@ -66,6 +70,11 @@ class Mission(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<Mission {self.name}>'
 
+class MissionSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Mission
+        load_instance = True
+
 class CelestialBody(db.Model, SerializerMixin):
     __tablename__ = 'celestial_bodies'
 
@@ -76,6 +85,12 @@ class CelestialBody(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<CelestialBody {self.name} ({self.type})>'
+
+class CelestialBodySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = CelestialBody
+        load_instance = True
+        
 
 # Define relationships after all classes are defined
 Player.missions = db.relationship('Mission', backref='player', lazy='dynamic')

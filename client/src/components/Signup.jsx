@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -10,10 +11,15 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/signup', { username, email, password });
-      setMessage(`Signup successful: Welcome ${response.data.username}`);
+      const response = await axios.post('http://localhost:5555/signup', { username, email, password });
+      if (response.status === 201) {
+        setMessage(`Signup successful: Welcome ${response.data.username}`);
+        // Redirect or show success message
+      } else {
+        setMessage('Signup failed');
+      }
     } catch (error) {
-      setMessage(`Signup failed: ${error.response?.data?.msg || error.message}`);
+      setMessage(`Signup failed: ${error.response?.data?.error || error.message}`);
     }
   };
 

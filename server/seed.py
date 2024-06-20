@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
 
-# Standard library imports
 from random import randint, choice
 from faker import Faker
-from app import app
+from app import create_app
 from extensions import db 
 from models import Player, Spacecraft, Mission, CelestialBody
 
@@ -61,7 +59,7 @@ def seed_missions():
 
 
 if __name__ == '__main__':
-    fake = Faker()
+    app = create_app()
     with app.app_context():
         db.drop_all()
         db.create_all()
@@ -70,4 +68,3 @@ if __name__ == '__main__':
         seed_celestial_bodies()
         seed_missions()
         print("Seeding complete!")
-
