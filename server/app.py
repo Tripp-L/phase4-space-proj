@@ -12,6 +12,7 @@ from flask_marshmallow import Marshmallow
 from sqlalchemy import MetaData
 from config import Config 
 from extensions import db, migrate, bcrypt, ma, jwt
+from sqlalchemy_serializer import SerializerMixin
 
 metadata = MetaData(naming_convention={
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
@@ -30,6 +31,7 @@ def create_app():
     api = Api(app)
 
     from models import Player, Spacecraft, Mission, CelestialBody
+
 
 
 class PlayerSchema(SerializerMixin):
@@ -184,21 +186,19 @@ class CelestialBodyResource(Resource):
         return '', 204
 
 
-api.add_resource(SpacecraftsListResource, '/spacecrafts')
-api.add_resource(SpacecraftResource, '/spacecrafts/<int:spacecraft_id>')
-api.add_resource(PlayersListResource, '/players')
-api.add_resource(PlayerResource, '/players/<int:player_id>')
-api.add_resource(MissionsListResource, '/missions')
-api.add_resource(MissionResource, '/missions/<int:mission_id>')
-api.add_resource(CelestialBodiesListResource, '/celestial_bodies')
-api.add_resource(CelestialBodyResource, '/celestial_bodies/<int:celestial_body_id>')
+    api.add_resource(SpacecraftsListResource, '/spacecrafts')
+    api.add_resource(SpacecraftResource, '/spacecrafts/<int:spacecraft_id>')
+    api.add_resource(PlayersListResource, '/players')
+    api.add_resource(PlayerResource, '/players/<int:player_id>')
+    api.add_resource(MissionsListResource, '/missions')
+    api.add_resource(MissionResource, '/missions/<int:mission_id>')
+    api.add_resource(CelestialBodiesListResource, '/celestial_bodies')
+    api.add_resource(CelestialBodyResource, '/celestial_bodies/<int:celestial_body_id>')
 
 
     @app.route('/')
     def index():
         return app.send_static_file('index.html')
-
-    return app
 
 if __name__ == '__main__':
     app = create_app()

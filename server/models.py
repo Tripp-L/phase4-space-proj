@@ -1,7 +1,6 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from app import db, bcrypt, ma  # Import db, bcrypt, and ma from app.py
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 class Player(db.Model, SerializerMixin):
     __tablename__ = 'players'
