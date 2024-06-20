@@ -10,6 +10,7 @@ from sqlalchemy_serializer import SerializerMixin
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 
+
 app = Flask(__name__, static_folder='../client/build', static_url_path='/')
 api = Api(app)
 CORS(app)
@@ -28,7 +29,7 @@ class PlayerSchema(SerializerMixin):
     class Meta:
         model = Player
         fields = ('id', 'name', 'age', 'origin', 'imageurl')
-=======
+        
 from flask import request
 from flask_restful import Resource
 
