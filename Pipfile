@@ -16,6 +16,8 @@ werkzeug = "*"
 bcrypt = "*"
 cors = "*"
 flask-bcrypt = "*"
+flask-marshmallow = "*"
+flask-jwt-extended = "*"
 
 [requires]
 python_full_version = "3.8.13"
