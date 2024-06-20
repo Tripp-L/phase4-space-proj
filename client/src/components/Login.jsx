@@ -51,6 +51,6 @@ function Login(){
                 </form>
             </div>
         </div>
-    )
+    );
 }
-export default Login
+export default Login;

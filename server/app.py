@@ -1,26 +1,35 @@
+
 #!/usr/bin/env python3
 import os
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from sqlalchemy_serializer import SerializerMixin
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
+from flask_marshmallow import Marshmallow
+from sqlalchemy import MetaData
+from config import Config 
+from extensions import db, migrate, bcrypt, ma, jwt
 
+metadata = MetaData(naming_convention={
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    })
 
-app = Flask(__name__, static_folder='../client/build', static_url_path='/')
-api = Api(app)
-CORS(app)
-bcrypt = Bcrypt(app)
+def create_app():
+    app = Flask(__name__, static_folder='../client/build', static_url_path='/')
+    app.config.from_object(Config)
+    
+    db.init_app(app)
+    migrate.init_app(app, db)
+    jwt.init_app(app)
+    bcrypt.init_app(app)
+    ma.init_app(app)
+    CORS(app)
+    api = Api(app)
 
-
-app.config.from_object('config.Config')  
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-
-from models import Player, Spacecraft, Mission, CelestialBody
+    from models import Player, Spacecraft, Mission, CelestialBody
 
 
 class PlayerSchema(SerializerMixin):
@@ -185,10 +194,12 @@ api.add_resource(CelestialBodiesListResource, '/celestial_bodies')
 api.add_resource(CelestialBodyResource, '/celestial_bodies/<int:celestial_body_id>')
 
 
-@app.route('/')
-def index():
-    return app.send_static_file('index.html')
+    @app.route('/')
+    def index():
+        return app.send_static_file('index.html')
 
+    return app
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True) 
+    app = create_app()
+    app.run(port=5555, debug=True)
