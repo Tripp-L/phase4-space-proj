@@ -1,6 +1,8 @@
-import os
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> main
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -8,6 +10,11 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> main
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -24,6 +31,10 @@ db.init_app(app)
 
 api = Api(app)
 
+<<<<<<< HEAD
+
+CORS(app)
+=======
 CORS(app)
 
 class Config:
@@ -32,3 +43,4 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'supersecretjwtkey')
 
+>>>>>>> main

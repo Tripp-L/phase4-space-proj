@@ -48,7 +48,22 @@ const Player = () => {
     const { celestialBodies, totalDistance, destinations } = useSpace();
     const [form, setForm] = useState({ name: '', description: '', imageurl: '', age: '', origin: '' });
 
-    
+    useEffect(() => {
+        const initTasks = {};
+        const initEquipment = {};
+        players.forEach(mission => {
+            if (mission.name == 'Alien'){
+                initTasks[mission.id] = ["Observation", "Equipment Repair", "Surface Test", "Collect Debris", "Alien Contact"];
+                initEquipment[mission.id] = ["Ray Gun", "Jet Pack", "Nano-repair Module", "Environmental Analyzer", "Biometric Scanner", "Exosuit", "Gravity Manipulating Gun", "Antigravity Levitator"];
+            } else{
+                initTasks[mission.id] = ["Observation", "Equipment Repair", "Surface Test", "Collect Debris", "Alien Contact"];
+                initEquipment[mission.id] = ["Night Vision Goggles", "Universal Translator Radio", "Laser", "Shovels", "Sample Containers", "Cameras", "Grab Poles", "Collection Nets", "Beakers", "Toolbox", "Gift Offerings"];
+            }
+                
+        });
+        setAvailableTasks(initTasks);
+        setAvailableEquipment(initEquipment);
+    }, [players]);
 
     const handleMissionSelect = id => {
         setplayerId(id);
