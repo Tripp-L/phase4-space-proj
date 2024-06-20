@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .models import db, Player, PlayerSchema, Spacecraft, SpacecraftSchema, Mission, MissionSchema, CelestialBody, CelestialBodySchema
@@ -10,18 +10,24 @@ class UserRegister(Resource):
         username = request.json.get('username')
         email = request.json.get('email')
         password = request.json.get('password')
+        
+        # if not username or not email or not password:
+        #     return jsonify({"msg": "Missing username, email, or password"}), 400
 
-        if not username or not email or not password:
-            return jsonify({"msg": "Missing username, email, or password"}), 400
-
-        if Player.query.filter_by(username=username).first() or Player.query.filter_by(email=email).first():
-            return jsonify({"msg": "Username or email already exists"}), 409
-
+        # if Player.query.filter_by(username=username).first() or Player.query.filter_by(email=email).first():
+        #     response = make_response(
+        #         jsonify(
+        #             {"message": "TEst", "severity": "danger"}
+        #         ),
+        #         401,
+        #     )
+        #     response.headers["Content-Type"] = "application/json"
+        #     return response
         player = Player(username=username, email=email, password=password)
         db.session.add(player)
         db.session.commit()
 
-        return player_schema.jsonify(player), 201
+        return make_response('player', 201)
 
 class UserLogin(Resource):
     def post(self):
