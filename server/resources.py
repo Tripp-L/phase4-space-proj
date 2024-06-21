@@ -10,24 +10,18 @@ class UserRegister(Resource):
         username = request.json.get('username')
         email = request.json.get('email')
         password = request.json.get('password')
-        
+
         if not username or not email or not password:
-            return jsonify({"msg": "Missing username, email, or password"}), 400
+            return make_response(jsonify({"msg": "Missing username, email, or password"}), 400)
 
         if Player.query.filter_by(username=username).first() or Player.query.filter_by(email=email).first():
-            response = make_response(
-                jsonify(
-                    {"message": "TEst", "severity": "danger"}
-                ),
-                401,
-            )
-            response.headers["Content-Type"] = "application/json"
-            return response
+            return make_response(jsonify({"msg": "Username or email already exists"}), 409)
+
         player = Player(username=username, email=email, password=password)
         db.session.add(player)
         db.session.commit()
 
-        return make_response('player', 201)
+        return make_response(jsonify({"username": player.username}), 201)
 
 class UserLogin(Resource):
     def post(self):

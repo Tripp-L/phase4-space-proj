@@ -29,6 +29,7 @@ function Spacecrafts({ spacecrafts, setSpacecrafts, onDelete }) {
     );
     setEditMode(null);
   };
+  
 
   return (
     <div className="container spacecraft-container">
