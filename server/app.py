@@ -14,7 +14,6 @@ from .resources import UserRegister, UserLogin, ProtectedResource, SpacecraftsLi
 def create_app():
     app = Flask(__name__, static_folder='../client/build', static_url_path='/')
     app.config.from_object(Config)
-    
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)

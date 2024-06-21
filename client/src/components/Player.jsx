@@ -128,7 +128,7 @@ const Player = () => {
                                         
                                     </div>
                                     <ButtonGroup vertical>
-                                        <Button variant="primary" onClick={handleMissionDeselect}>Unselect Mission</Button>
+                                        <Button variant="primary" onClick={handleMissionDeselect}>Unselect Player</Button>
                                         {players.find(m => m.id === playerId).isNew && (
                                             <Button variant="danger" className="mt-2" onClick={() => handleDelete(playerId)}>Delete Mission</Button>
                                         )}

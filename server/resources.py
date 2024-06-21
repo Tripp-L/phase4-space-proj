@@ -28,21 +28,17 @@ class UserLogin(Resource):
         email = request.json.get('email')
         password = request.json.get('password')
         
-        # Assuming Player is your SQLAlchemy model
         player = Player.query.filter_by(email=email).first()
         
         if not player or not player.authenticate(password):
             return jsonify({"msg": "Invalid email or password"}), 401
         
-        # If authentication succeeds, set a cookie and return a response
-        response = make_response("Setting cookie!")
-        response.set_cookie('cookie_name', 'cookie_value', max_age=3600)  # example: cookie valid for 1 hour
+        session['user_id'] = 'cookie'
         
-        # Create JWT access token
-        access_token = create_access_token(identity=player.id)
-        
-        # Return both the cookie-setting response and the access token
-        return jsonify(access_token=access_token), response
+        print(session)
+        # access_token = create_access_token(identity=player.id)
+
+        return make_response(jsonify({"username": player.username}), 200)
 class ProtectedResource(Resource):
     @jwt_required()
     def get(self):
@@ -52,8 +48,13 @@ class ProtectedResource(Resource):
 
 class SpacecraftsListResource(Resource):
     def get(self):
-        spacecrafts = Spacecraft.query.all()
-        return jsonify(SpacecraftSchema(many=True).dump(spacecrafts))
+        if 'user_id' in session:
+            user_id = session['user_id']
+            return f'User ID: {user_id}'
+        else:
+            return 'User not logged in'
+        # spacecrafts = Spacecraft.query.all()
+        # return jsonify(SpacecraftSchema(many=True).dump(spacecrafts))
 
     def post(self):
         data = request.get_json()
