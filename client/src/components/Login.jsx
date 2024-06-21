@@ -20,7 +20,8 @@ function Login(){
                 }
             }).then((resp) =>{
                 if (resp.ok) {
-                    navigate('/home')
+                    console.log('hello')
+                    // navigate('/player')
                 } else {
                     console.error('Login failed')
                 }

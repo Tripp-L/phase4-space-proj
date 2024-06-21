@@ -1,4 +1,4 @@
-from flask import request, jsonify, make_response
+from flask import request, jsonify, make_response, session
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .models import db, Player, PlayerSchema, Spacecraft, SpacecraftSchema, Mission, MissionSchema, CelestialBody, CelestialBodySchema
@@ -11,18 +11,18 @@ class UserRegister(Resource):
         email = request.json.get('email')
         password = request.json.get('password')
         
-        # if not username or not email or not password:
-        #     return jsonify({"msg": "Missing username, email, or password"}), 400
+        if not username or not email or not password:
+            return jsonify({"msg": "Missing username, email, or password"}), 400
 
-        # if Player.query.filter_by(username=username).first() or Player.query.filter_by(email=email).first():
-        #     response = make_response(
-        #         jsonify(
-        #             {"message": "TEst", "severity": "danger"}
-        #         ),
-        #         401,
-        #     )
-        #     response.headers["Content-Type"] = "application/json"
-        #     return response
+        if Player.query.filter_by(username=username).first() or Player.query.filter_by(email=email).first():
+            response = make_response(
+                jsonify(
+                    {"message": "TEst", "severity": "danger"}
+                ),
+                401,
+            )
+            response.headers["Content-Type"] = "application/json"
+            return response
         player = Player(username=username, email=email, password=password)
         db.session.add(player)
         db.session.commit()
@@ -33,14 +33,22 @@ class UserLogin(Resource):
     def post(self):
         email = request.json.get('email')
         password = request.json.get('password')
-
+        
+        # Assuming Player is your SQLAlchemy model
         player = Player.query.filter_by(email=email).first()
+        
         if not player or not player.authenticate(password):
             return jsonify({"msg": "Invalid email or password"}), 401
-
+        
+        # If authentication succeeds, set a cookie and return a response
+        response = make_response("Setting cookie!")
+        response.set_cookie('cookie_name', 'cookie_value', max_age=3600)  # example: cookie valid for 1 hour
+        
+        # Create JWT access token
         access_token = create_access_token(identity=player.id)
-        return jsonify(access_token=access_token)
-
+        
+        # Return both the cookie-setting response and the access token
+        return jsonify(access_token=access_token), response
 class ProtectedResource(Resource):
     @jwt_required()
     def get(self):
