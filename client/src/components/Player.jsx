@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Mission.css';
 import { useSpace } from '../App';
-import { Button, Card, ListGroup, ButtonGroup } from 'react-bootstrap';
+import { Button, Card, ListGroup, ButtonGroup, ListGroupItem } from 'react-bootstrap';
 localStorage.clear()
 
 const initialPlayer = [
@@ -41,29 +41,13 @@ const Player = () => {
         return saved ? JSON.parse(saved) : null; //Set to null
     });
     const [expandedMissionId, setExpandedMissionId] = useState(null);
-    const [availableTasks, setAvailableTasks] = useState({});
-    const [availableEquipment, setAvailableEquipment] = useState({});
-    const [selectedTasks, setSelectedTasks] = useState({});
-    const [selectedEquipment, setSelectedEquipment] = useState({});
+    
     const { celestialBodies, totalDistance, destinations } = useSpace();
     const [form, setForm] = useState({ name: '', description: '', imageurl: '', age: '', origin: '' });
 
-    useEffect(() => {
-        const initTasks = {};
-        const initEquipment = {};
-        players.forEach(mission => {
-            if (mission.name == 'Alien'){
-                initTasks[mission.id] = ["Observation", "Equipment Repair", "Surface Test", "Collect Debris", "Alien Contact"];
-                initEquipment[mission.id] = ["Ray Gun", "Jet Pack", "Nano-repair Module", "Environmental Analyzer", "Biometric Scanner", "Exosuit", "Gravity Manipulating Gun", "Antigravity Levitator"];
-            } else{
-                initTasks[mission.id] = ["Observation", "Equipment Repair", "Surface Test", "Collect Debris", "Alien Contact"];
-                initEquipment[mission.id] = ["Night Vision Goggles", "Universal Translator Radio", "Laser", "Shovels", "Sample Containers", "Cameras", "Grab Poles", "Collection Nets", "Beakers", "Toolbox", "Gift Offerings"];
-            }
-                
-        });
-        setAvailableTasks(initTasks);
-        setAvailableEquipment(initEquipment);
-    }, [players]);
+    // useEffect(() => {
+        
+    // }, [players]); use for missions
 
     const handleMissionSelect = id => {
         setplayerId(id);
@@ -77,49 +61,9 @@ const Player = () => {
         localStorage.removeItem("playerId");
     };
 
-    const toggleTask = (missionId, task) => {
-        if (selectedTasks[missionId]?.includes(task)) {
-            setAvailableTasks({
-                ...availableTasks,
-                [missionId]: [...availableTasks[missionId], task]
-            });
-            setSelectedTasks({
-                ...selectedTasks,
-                [missionId]: selectedTasks[missionId].filter(t => t !== task)
-            });
-        } else {
-            setAvailableTasks({
-                ...availableTasks,
-                [missionId]: availableTasks[missionId].filter(t => t !== task)
-            });
-            setSelectedTasks({
-                ...selectedTasks,
-                [missionId]: [...(selectedTasks[missionId] || []), task]
-            });
-        }
-    };
+    
 
-    const toggleEquipment = (missionId, equipmentItem) => {
-        if (selectedEquipment[missionId]?.includes(equipmentItem)) {
-            setAvailableEquipment({
-                ...availableEquipment,
-                [missionId]: [...availableEquipment[missionId], equipmentItem]
-            });
-            setSelectedEquipment({
-                ...selectedEquipment,
-                [missionId]: selectedEquipment[missionId].filter(e => e !== equipmentItem)
-            });
-        } else {
-            setAvailableEquipment({
-                ...availableEquipment,
-                [missionId]: availableEquipment[missionId].filter(e => e !== equipmentItem)
-            });
-            setSelectedEquipment({
-                ...selectedEquipment,
-                [missionId]: [...(selectedEquipment[missionId] || []), equipmentItem]
-            });
-        }
-    };
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -175,20 +119,13 @@ const Player = () => {
                                     <p className="card-section"><strong>Age:</strong> {players.find(m => m.id === playerId).age} Years Old</p>
                                     <p className="card-section"><strong>Origin:</strong> {players.find(m => m.id === playerId).origin}</p>
                                     <div className="card-section">
-                                        <strong>Tasks:</strong>
+                                        <strong>Missions:</strong>
                                         <ListGroup>
-                                            {selectedTasks[playerId]?.map(task => (
-                                                <ListGroup.Item key={task} onClick={() => toggleTask(playerId, task)} className="clickable-item">{task}</ListGroup.Item>
-                                            ))}
+                                            <ListGroupItem>This is the player card</ListGroupItem>
                                         </ListGroup>
                                     </div>
                                     <div className="card-section">
-                                        <strong>Equipment:</strong>
-                                        <ListGroup>
-                                            {selectedEquipment[playerId]?.map(equipment => (
-                                                <ListGroup.Item key={equipment} onClick={() => toggleEquipment(playerId, equipment)} className="clickable-item">{equipment}</ListGroup.Item>
-                                            ))}
-                                        </ListGroup>
+                                        
                                     </div>
                                     <ButtonGroup vertical>
                                         <Button variant="primary" onClick={handleMissionDeselect}>Unselect Mission</Button>
@@ -203,24 +140,13 @@ const Player = () => {
                             <div className="task-equipment-container">
                                 <Card className="task-card mb-3">
                                     <Card.Body>
-                                        <h4>Tasks</h4>
+                                        <h4>Missions</h4>
                                         <ListGroup variant="flush">
-                                            {availableTasks[playerId]?.map(task => (
-                                                <ListGroup.Item key={task} onClick={() => toggleTask(playerId, task)} className="clickable-item">{task}</ListGroup.Item>
-                                            ))}
+                                            <ListGroupItem>This is specifically the mission list</ListGroupItem>
                                         </ListGroup>
                                     </Card.Body>
                                 </Card>
-                                <Card className="equipment-card">
-                                    <Card.Body>
-                                        <h4>Equipment</h4>
-                                        <ListGroup variant="flush">
-                                            {availableEquipment[playerId]?.map(item => (
-                                                <ListGroup.Item key={item} onClick={() => toggleEquipment(playerId, item)} className="clickable-item">{item}</ListGroup.Item>
-                                            ))}
-                                        </ListGroup>
-                                    </Card.Body>
-                                </Card>
+                                
                             </div>
                         </div>
                     </>
