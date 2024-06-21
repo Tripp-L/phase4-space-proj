@@ -12,7 +12,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5555/login', { email, password });
+      const response = await axios.post('http://127.0.0.1:5555/login', { email, password });
       if (response.status === 200) {
         setMessage('Login successful');
         localStorage.setItem('token', response.data.access_token);
