@@ -1,61 +1,82 @@
-import React, { useState, useEffect } from 'react';
-import { useSpace } from '../App';
-import { Card, Button, ListGroup, ButtonGroup } from 'react-bootstrap';
+// Spacecrafts.jsx
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './spacecrafts.css';
 
-const Spacecrafts = () => {
-  const { spacecrafts, toggleSpacecraft } = useSpace();
-  const [selectedSpacecraftId, setSelectedSpacecraftId] = useState(() => {
-    const saved = localStorage.getItem("selectedSpacecraftId");
-    return saved ? JSON.parse(saved) : null;
-  });
+function Spacecrafts({ spacecrafts = [], setSpacecrafts }) {
+  const [visibleDetails, setVisibleDetails] = useState({});
+  const [editMode, setEditMode] = useState(null);
+  const [editedCraft, setEditedCraft] = useState({});
 
-  useEffect(() => {
-    localStorage.setItem("selectedSpacecraftId", JSON.stringify(selectedSpacecraftId));
-  }, [selectedSpacecraftId]);
-
-  const handleSelect = (id) => {
-    setSelectedSpacecraftId(id);
+  const toggleDetails = (id) => {
+    setVisibleDetails((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
   };
 
-  const handleDeselect = () => {
-    setSelectedSpacecraftId(null);
+  const handleEditClick = (craft) => {
+    setEditMode(craft.id);
+    setEditedCraft(craft);
   };
 
-  console.log('Spacecrafts to render:', spacecrafts);
+  const handleEditChange = (e) => {
+    setEditedCraft({ ...editedCraft, [e.target.name]: e.target.value });
+  };
+
+  const handleSaveEdit = (id) => {
+    setSpacecrafts(prevSpacecrafts =>
+      prevSpacecrafts.map(craft => (craft.id === id ? editedCraft : craft))
+    );
+    setEditMode(null);
+  };
+
 
   return (
-    <div className="container">
-      <h1 className="spacecraft-title my-3"><span className="emoji">🚀</span> Spacecrafts <span className="emoji">🚀</span></h1>
+    <div className="container spacecraft-container">
+      <h1 className="spacecraft-title my-5">🚀 Spacecrafts 🚀</h1>
+
       <div className="row">
-        {spacecrafts && spacecrafts.length > 0 ? (
-          spacecrafts.map((spacecraft) => (
-            <div key={spacecraft.id} className="col-md-4 mb-3">
-              <Card className="spacecraft-card" onClick={() => handleSelect(spacecraft.id)}>
-                <Card.Img variant="top" src={spacecraft.image} />
-                <Card.Body>
-                  <Card.Title className="card-title">{spacecraft.name}</Card.Title>
-                  <Card.Text className="card-text">{spacecraft.equipment}</Card.Text>
-                  <Card.Text className="card-text">Speed: {spacecraft.speed} km/h</Card.Text>
-                  <Card.Text className="card-text">Fuel Log: {spacecraft.fuel_log}</Card.Text>
-                  {selectedSpacecraftId === spacecraft.id && (
-                    <ButtonGroup vertical>
-                      <Button variant="primary" onClick={handleDeselect}>Unselect Spacecraft</Button>
-                      <Button variant="danger" onClick={() => toggleSpacecraft(spacecraft)}>Toggle Spacecraft</Button>
-                    </ButtonGroup>
-                  )}
-                </Card.Body>
-              </Card>
+        {spacecrafts.map((craft) => (
+          <div key={craft.id} className="col-md-4 mb-3">
+            <div className="card spacecraft-card" onClick={() => toggleDetails(craft.id)}>
+              <img src={craft.image} className="card-img-top" alt={craft.name} />
+              <div className="card-body">
+                <h5 className="card-title">🚀 <strong>{craft.name}</strong> 🚀</h5>
+
+                {editMode === craft.id ? (
+                  // Edit Mode
+                  <div className="details">
+                    <input type="text" name="name" value={editedCraft.name} onChange={handleEditChange} />
+                    <input type="number" name="speed" value={editedCraft.speed} onChange={handleEditChange} />
+                    <input type="text" name="equipment" value={editedCraft.equipment} onChange={handleEditChange} />
+                    <input type="number" name="fuel_log" value={editedCraft.fuel_log} onChange={handleEditChange} />
+                    <input type="url" name="image" value={editedCraft.image} onChange={handleEditChange} />
+
+                    <button onClick={() => handleSaveEdit(craft.id)} className="btn btn-success">Save</button>
+                    <button onClick={() => setEditMode(null)} className="btn btn-secondary">Cancel</button>
+                  </div>
+                ) : visibleDetails[craft.id] ? (
+                  // View Mode (details expanded)
+                  <div className="details">
+                    <p className="card-text">Speed: {craft.speed}</p>
+                    <p className="card-text">Fuel Log: {craft.fuel_log}</p>
+                    <p className="card-text">Equipment: {craft.equipment}</p>
+                    <button onClick={() => handleEditClick(craft)} className="btn btn-primary">Edit</button>
+                    <button onClick={() => setSpacecrafts(prevCrafts => prevCrafts.filter(item => item.id !== craft.id))} className="btn btn-danger">Delete</button>
+                  </div>
+                ) : null}
+              </div>
             </div>
-          ))
-        ) : (
-          <div>No spacecrafts available</div>
-        )}
+          </div>
+        ))}
       </div>
+
+      <Link to="/spacecrafts/new">
+        <button className="new-btn">Create New Spacecraft</button>
+      </Link>
     </div>
   );
-};
+}
 
 export default Spacecrafts;
-
-
