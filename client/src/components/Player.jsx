@@ -62,7 +62,11 @@ const initialPlayer = [
     }
 ];
 
+
 const Player = () => {
+    
+    
+
     const [players, setPlayers] = useState(() => {
         const saved = localStorage.getItem("players");
         return saved ? JSON.parse(saved) : initialPlayer; //Set to initial player
@@ -72,8 +76,6 @@ const Player = () => {
         return saved ? JSON.parse(saved) : null; //Set to null
     });
     const [expandedMissionId, setExpandedMissionId] = useState(null);
-    
-    const { celestialBodies, totalDistance, destinations } = useSpace();
     const [form, setForm] = useState({ name: '', description: '', imageurl: '', age: '', origin: '' });
 
     // useEffect(() => {
@@ -119,7 +121,7 @@ const Player = () => {
         });
         setForm({ name: '', description: '', imageurl: '' });
     };
-
+    
     const handleDelete = (id) => {
         setPlayers(prevData => {
             const newData = prevData.filter(mission => mission.id !== id);
