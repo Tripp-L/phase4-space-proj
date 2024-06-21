@@ -1,9 +1,8 @@
-
 from random import randint, choice
 from faker import Faker
-from app import create_app
-from extensions import db 
-from models import Player, Spacecraft, Mission, CelestialBody
+from .app import create_app
+from .extensions import db
+from .models import Player, Spacecraft, Mission, CelestialBody
 
 fake = Faker()
 
@@ -16,7 +15,7 @@ def seed_players():
         )
         db.session.add(player)
     db.session.commit()
-    
+
 def seed_spacecrafts():
     for _ in range(10):
         spacecraft = Spacecraft(
@@ -28,7 +27,7 @@ def seed_spacecrafts():
         )
         db.session.add(spacecraft)
     db.session.commit()
-    
+
 def seed_celestial_bodies():
     for _ in range(10):
         celestial_body = CelestialBody(
@@ -37,13 +36,13 @@ def seed_celestial_bodies():
             type=fake.word()
         )
         db.session.add(celestial_body)
-    db.session.commit()   
-    
+    db.session.commit()
+
 def seed_missions():
     players = Player.query.all()
     spacecrafts = Spacecraft.query.all()
-    celestial_bodies = CelestialBody.query.all() 
-    
+    celestial_bodies = CelestialBody.query.all()
+
     for _ in range(10):
         mission = Mission(
             name=fake.word(),
@@ -56,7 +55,6 @@ def seed_missions():
         )
         db.session.add(mission)
     db.session.commit()
-
 
 if __name__ == '__main__':
     app = create_app()

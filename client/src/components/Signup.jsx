@@ -1,13 +1,14 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
-import "./signup.css"
+import { useNavigate } from 'react-router-dom';
+import "./signup.css";
 
 function Signup() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -15,12 +16,14 @@ function Signup() {
       const response = await axios.post('http://localhost:5555/signup', { username, email, password });
       if (response.status === 201) {
         setMessage(`Signup successful: Welcome ${response.data.username}`);
-        // Redirect or show success message
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000); // Redirect to login after 2 seconds
       } else {
         setMessage('Signup failed');
       }
     } catch (error) {
-      setMessage(`Signup failed: ${error.response?.data?.error || error.message}`);
+      setMessage(`Signup failed: ${error.response?.data?.msg || error.message}`);
     }
   };
 
