@@ -205,7 +205,7 @@ const Player = () => {
                     ))
                 )}
             </div>
-            <div className="add-mission-form-container">
+            <div className="add-player-form-container">
                 <h3>🛰️ Explorer 🛰️</h3>
                 <form className="add-mission-form" onSubmit={handleSubmit}>
                     <input type="text" className="form-control" placeholder="Name" name="name" value={form.name} onChange={handleChange} />
