@@ -2,8 +2,39 @@ import React, { useState, useEffect } from 'react';
 import './Mission.css';
 import { useSpace } from '../App';
 import { Button, Card, ListGroup, ButtonGroup, ListGroupItem } from 'react-bootstrap';
-localStorage.clear()
 
+const initialMissions = [
+    {
+        id: 1,
+        name: "Space Quest: Echoes of an Ancient Civilization",
+        description: "A long-lost civilization's secrets lie buried beneath the sands of a desolate planet. Your mission: observe the intricate ruins, decipher cryptic symbols, and collect artifacts for analysis. Uncover the truth behind their sudden disappearance and piece together the fragments of their history!",
+        imageurl: "https://cdn.mos.cms.futurecdn.net/cf3j6AWGEfJ8LKfTDSekEY.jpg"
+    },
+    {
+        id: 2,
+        name: "Stardust Voyage: Cosmic Timeshift",
+        description: "A mysterious rift in spacetime threatens to unravel the fabric of reality. Your mission: venture to the edge of the anomaly and conduct surface tests to understand its nature and origin! Can you stabilize the rift before it tears the universe apart?",
+        imageurl: "https://www.ingenieur.de/wp-content/uploads/2017/11/2014/1555_Der-Marsrover-Opportunity.jpg"
+    },
+    {
+        id: 3,
+        name: "Cosmic Expedition: Is This Life?",
+        description: "A dying star system is on the brink of collapse, but rumors of habitable planets persist. Your mission: collect vital resources while conducting thorough surface tests to determine if life could survive in this harsh environment. The clock is ticking, and the fate of countless beings rests in your hands!",
+        imageurl: "https://www.universetoday.com/wp-content/uploads/2020/05/RAT_rover_by_night_pillars-1920x1200.jpg"
+    },
+    {
+        id: 4,
+        name: "Nebula Nexus: Beacon of the Unknown",
+        description: "A cryptic signal from a previously unknown alien species has been intercepted. Your mission: establish alien contact and decipher their complex communication patterns. Are they friend, foe, or something in between? Tread carefully, as the fate of humanity could hang in the balance of this first encounter!",
+        imageurl: "https://cdn.images.express.co.uk/img/dynamic/151/590x/Radio-signals-from-space-SETI-Institute-alien-origin-Fast-Radio-Bursts-FRBs-space-news-1168650.jpg?r=1566891356657"
+    },
+    {
+        id: 5,
+        name: "Void Voyager: Operation Salvage",
+        description: "A vital satellite orbiting a gas giant has malfunctioned, leaving a crucial scientific mission in jeopardy. Your mission: dock with the damaged satellite, conduct equipment repairs, and restore its functionality. The clock is ticking, and the data it holds could unlock the secrets of the universe!",
+        imageurl: "https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2000/09/claude_nicollier_repairing_hubble/9233215-7-eng-GB/Claude_Nicollier_repairing_Hubble_pillars.jpg"
+    }
+];
 const initialPlayer = [
     {
         id: 1,
@@ -31,7 +62,11 @@ const initialPlayer = [
     }
 ];
 
+
 const Player = () => {
+    
+    
+
     const [players, setPlayers] = useState(() => {
         const saved = localStorage.getItem("players");
         return saved ? JSON.parse(saved) : initialPlayer; //Set to initial player
@@ -41,8 +76,6 @@ const Player = () => {
         return saved ? JSON.parse(saved) : null; //Set to null
     });
     const [expandedMissionId, setExpandedMissionId] = useState(null);
-    
-    const { celestialBodies, totalDistance, destinations } = useSpace();
     const [form, setForm] = useState({ name: '', description: '', imageurl: '', age: '', origin: '' });
 
     // useEffect(() => {
@@ -88,7 +121,7 @@ const Player = () => {
         });
         setForm({ name: '', description: '', imageurl: '' });
     };
-
+    
     const handleDelete = (id) => {
         setPlayers(prevData => {
             const newData = prevData.filter(mission => mission.id !== id);
@@ -119,10 +152,8 @@ const Player = () => {
                                     <p className="card-section"><strong>Age:</strong> {players.find(m => m.id === playerId).age} Years Old</p>
                                     <p className="card-section"><strong>Origin:</strong> {players.find(m => m.id === playerId).origin}</p>
                                     <div className="card-section">
-                                        <strong>Missions:</strong>
-                                        <ListGroup>
-                                            <ListGroupItem>This is the player card</ListGroupItem>
-                                        </ListGroup>
+
+                                        
                                     </div>
                                     <div className="card-section">
                                         
@@ -130,7 +161,7 @@ const Player = () => {
                                     <ButtonGroup vertical>
                                         <Button variant="primary" onClick={handleMissionDeselect}>Unselect Player</Button>
                                         {players.find(m => m.id === playerId).isNew && (
-                                            <Button variant="danger" className="mt-2" onClick={() => handleDelete(playerId)}>Delete Mission</Button>
+                                            <Button variant="danger" className="mt-2" onClick={() => handleDelete(playerId)}>Delete Player</Button>
                                         )}
                                     </ButtonGroup>
                                 </Card.Body>
@@ -142,7 +173,9 @@ const Player = () => {
                                     <Card.Body>
                                         <h4>Missions</h4>
                                         <ListGroup variant="flush">
-                                            <ListGroupItem>This is specifically the mission list</ListGroupItem>
+                                        {initialMissions?.map(mission => (
+                                                <ListGroup.Item key={mission.name} className="clickable-item">{mission.name}</ListGroup.Item>
+                                            ))}
                                         </ListGroup>
                                     </Card.Body>
                                 </Card>
@@ -163,7 +196,7 @@ const Player = () => {
                                             <ButtonGroup vertical>
                                                 <Button variant="primary" onClick={() => handleMissionSelect(mission.id)}>Select Player</Button>
                                                 {mission.isNew && (
-                                                    <Button variant="danger" className="mt-2" onClick={() => handleDelete(mission.id)}>Delete Mission</Button>
+                                                    <Button variant="danger" className="mt-2" onClick={() => handleDelete(mission.id)}>Delete Player</Button>
                                                 )}
                                             </ButtonGroup>
                                         </>
@@ -174,7 +207,7 @@ const Player = () => {
                     ))
                 )}
             </div>
-            <div className="add-mission-form-container">
+            <div className="add-player-form-container">
                 <h3>🛰️ Explorer 🛰️</h3>
                 <form className="add-mission-form" onSubmit={handleSubmit}>
                     <input type="text" className="form-control" placeholder="Name" name="name" value={form.name} onChange={handleChange} />
