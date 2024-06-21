@@ -28,17 +28,17 @@ function Navbar() {
                         </div>
                     </Link>
 
-                    <Link to="/missions" className="nav-link">
-                        <div className="nav-item">
-                            <Image className="nav-image" src="https://1.bp.blogspot.com/-VTjCQPpcjk4/Xn6jZJTM9WI/AAAAAAAA-R0/a0onSuZrXaonJsj0my0xQRVxjLOFABfpQCLcBGAsYHQ/s1600/1.jpg" thumbnail />
-                            <span className="nav-text">Missions</span>
-                        </div>
-                    </Link>
-
                     <Link to="/destinations" className="nav-link">
                         <div className="nav-item">
                             <Image className="nav-image" src="https://i0.wp.com/acelessons.com/wp-content/uploads/2021/02/Universe.jpg" thumbnail />
                             <span className="nav-text">Destinations</span>
+                        </div>
+                    </Link>
+
+                    <Link to="/missions" className="nav-link">
+                        <div className="nav-item">
+                            <Image className="nav-image" src="https://1.bp.blogspot.com/-VTjCQPpcjk4/Xn6jZJTM9WI/AAAAAAAA-R0/a0onSuZrXaonJsj0my0xQRVxjLOFABfpQCLcBGAsYHQ/s1600/1.jpg" thumbnail />
+                            <span className="nav-text">Missions</span>
                         </div>
                     </Link>
 

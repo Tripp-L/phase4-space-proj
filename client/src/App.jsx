@@ -1,8 +1,8 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Spacecrafts from './components/Spacecrafts';
-import NewSpacecraftForm from './components/NewSpaceCraftForm'; // Adjusted the import statement
+import NewSpacecraftForm from './components/NewSpaceCraftForm';
 import Mission from './components/Mission';
 import CelestialBody from './components/CelestialBody';
 import Home from './components/Home';
@@ -61,18 +61,28 @@ function App() {
       image: "https://i.pinimg.com/originals/41/14/f3/4114f3fec8e59ed9b581f005c5ebbff1.jpg"
     }
   ]);
-  const [celestialBodies, setCelestialBodies] = useState([]);
-  const [totalDistance, setTotalDistance] = useState(0);
-  const [destinations, setDestinations] = useState('');
+
+  const [celestialBodies, setCelestialBodies] = useState(() => {
+    const saved = localStorage.getItem("celestialBodies");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [totalDistance, setTotalDistance] = useState(() => {
+    const saved = localStorage.getItem("totalDistance");
+    return saved ? JSON.parse(saved) : 0;
+  });
+
+  const [destinations, setDestinations] = useState(() => {
+    const saved = localStorage.getItem("destinations");
+    return saved ? JSON.parse(saved) : '';
+  });
 
   useEffect(() => {
     const fetchSpacecrafts = async () => {
       try {
         const response = await fetch('http://localhost:5555/spacecrafts');
         const data = await response.json();
-        if (data && data.length > 0) {
-          setSpacecrafts(data);
-        }
+        setSpacecrafts(data);
       } catch (error) {
         console.error('Error fetching spacecrafts:', error);
       }
@@ -95,20 +105,45 @@ function App() {
     fetchCelestialBodies();
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("celestialBodies", JSON.stringify(celestialBodies));
+  }, [celestialBodies]);
+
+  useEffect(() => {
+    localStorage.setItem("totalDistance", JSON.stringify(totalDistance));
+  }, [totalDistance]);
+
+  useEffect(() => {
+    localStorage.setItem("destinations", JSON.stringify(destinations));
+  }, [destinations]);
+
+  const toggleCelestialBody = (body) => {
+    const exists = celestialBodies.find(item => item.id === body.id);
+    const updatedCelestialBodies = exists ? celestialBodies.filter(item => item.id !== body.id) : [...celestialBodies, body];
+    setCelestialBodies(updatedCelestialBodies);
+
+    // Update total distance and destinations
+    const updatedTotalDistance = updatedCelestialBodies.reduce((acc, curr) => acc + parseFloat(curr.distance), 0);
+    setTotalDistance(updatedTotalDistance);
+
+    const updatedDestinations = updatedCelestialBodies.map(body => body.name).join(', ');
+    setDestinations(updatedDestinations);
+  };
+
   return (
-    <SpaceContext.Provider value={{ celestialBodies, totalDistance, destinations, spacecrafts }}>
+    <SpaceContext.Provider value={{ celestialBodies, totalDistance, destinations, spacecrafts, setCelestialBodies, setTotalDistance, setDestinations, toggleCelestialBody }}>
       <div className="App">
         <Navbar />
         <Container className="mt-4">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/player" element={<Player />} />
             <Route path="/destinations" element={<CelestialBody />} />
             <Route path="/missions" element={<Mission />} />
             <Route path="/spacecrafts" element={<Spacecrafts />} />
             <Route path="/spacecrafts/new" element={<NewSpacecraftForm />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
           </Routes>
         </Container>
       </div>
