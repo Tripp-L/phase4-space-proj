@@ -1,6 +1,6 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
-from .extensions import db, bcrypt, ma  # Import db, bcrypt, and ma from extensions
+from .extensions import db, bcrypt, ma  
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 class Player(db.Model, SerializerMixin):

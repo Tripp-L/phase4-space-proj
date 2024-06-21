@@ -1,4 +1,3 @@
-
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -14,7 +13,7 @@ import './components/spacecrafts.css';
 import './components/Mission.css';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Container from 'react-bootstrap/Container'; 
+import Container from 'react-bootstrap/Container';
 
 const SpaceContext = createContext();
 export const useSpace = () => useContext(SpaceContext);
