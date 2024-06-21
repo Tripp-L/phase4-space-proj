@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSpace } from '../App';
 import { Card, Button, ListGroup, ButtonGroup } from 'react-bootstrap';
 import './spacecrafts.css';
+import NewSpaceCraftForm from './NewSpaceCraftForm'
 
 const Spacecrafts = () => {
   const { spacecrafts, toggleSpacecraft } = useSpace();
@@ -52,6 +53,7 @@ const Spacecrafts = () => {
           <div>No spacecrafts available</div>
         )}
       </div>
+      <NewSpaceCraftForm />
     </div>
   );
 };
